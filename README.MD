@@ -1,0 +1,3 @@
+# Blogu
+
+Personal blogging platform
