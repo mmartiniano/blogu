@@ -1,0 +1,10 @@
+/* Import Quicksand font */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+
+/* Import Material Icons font */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+/* Set the page font */
+body {
+	font-family: 'Quicksand', sans-serif;
+}

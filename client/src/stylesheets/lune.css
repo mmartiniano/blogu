@@ -1,0 +1,948 @@
+/*
+Index
+	1 Styles and layout
+		1.1 General settings
+		1.2 Color
+			1.2.1 Color palette
+			1.2.2 Background color
+			1.2.3 Text color
+			1.2.4 Border color
+		1.3 Grid
+		1.4 Layout
+			1.4.1 Floats
+			1.4.2 Flex container and content alignment
+		1.5 Helpers
+			1.5.1 Hiding/Showing content
+			1.5.1 General utilities
+		1.6 Typography
+			1.6.1 Text align
+			1.6.2 Text style
+			1.6.3 Text components
+			1.6.4 Text Utilities
+
+	2 Components
+		2.1 Navbar
+		2.2 Form
+		2.3 Modal
+*/
+
+/*
+Make padding and border became 
+included in the total width and height
+of all HTML elements
+*/
+* {
+  box-sizing: border-box;
+}
+
+/*
+Prevent issues with HTML document
+default padding and margin. It also
+turns the page height into "100%"
+*/
+html, body {
+	min-height: 100vh;
+	padding: 0;
+	margin: 0;
+}
+
+
+/* Important styles constants definition */
+:root {
+	--round: 10px; /* Rounding constant*/
+	--fast:	 0.2s; /* Fast animation */ 
+	--regular: 0.6s; /* Regular animation */
+	--slow: 1s; /* Slow animation */
+	--hover: #E7E7E7; /* Hover animation color */
+	--zi: 10; /* Focused z-index */
+	--shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2); /* Box shadow */
+}
+
+/* Color scheme */
+
+/*
+Color variables.
+You can change the hex code
+to adjust the color.
+*/
+:root {
+	--primary: #202543; /* Blogu's primary color */
+	--secondary: #374061; /* Lune's secondary color (white) */
+	--highlight: #FFF; /* Blogu's highlight color */
+	--red: #DC6E53;
+	--pink: #EC407A;
+	--purple: #AC79B2;
+	--blue: #255C99;
+	--green: #67C295;
+	--yellow: #FFDC51;
+	--orange: #F3A343;
+	--brown: #795548;
+	--gray: #A9A9A9;
+	--black: #575757;
+	--white: #FFF;
+}
+
+
+/* Background classes */
+
+.primary {
+	background: var(--primary);
+}
+
+.secondary {
+	background: var(--secondary);
+}
+
+.highlight {
+	background: var(--highlight);
+}
+
+.red {
+	background-color: var(--red);
+}
+
+.pink {
+	background-color: var(--pink);
+}
+
+.purple {
+	background-color: var(--purple);
+}
+
+.blue {
+	background-color: var(--blue);
+}
+
+.green {
+	background-color: var(--green);
+}
+
+.yellow {
+	background-color: var(--yellow);
+}
+
+.orange {
+	background-color: var(--orange);
+}
+
+.brown {
+	background-color: var(--brown);
+}
+
+.gray {
+	background-color: var(--gray);
+}
+
+.black {
+	background-color: var(--black);
+}
+
+.white {
+	background-color: var(--white);
+}
+
+/* Text color classes */
+
+.primary-text {
+	color: var(--primary);
+}
+
+.secondary-text {
+	color: var(--secondary);
+}
+
+.highlight-text {
+	color: var(--highlight);
+}
+
+.red-text {
+	color: var(--red);
+}
+
+.pink-text {
+	color: var(--pink);
+}
+
+.purple-text {
+	color: var(--purple);
+}
+
+.blue-text {
+	color: var(--blue);
+}
+
+.green-text {
+	color: var(--green);
+}
+
+.yellow-text {
+	color: var(--yellow);
+}
+
+.orange-text {
+	color: var(--orange);
+}
+
+.brown-text {
+	color: var(--brown);
+}
+
+.gray-text {
+	color: var(--gray);
+}
+
+.black-text {
+	color: var(--black);
+}
+
+.white-text {
+	color: var(--white);
+}
+
+/* Border color classes */
+
+.primary-border {
+	border-color: var(--primary);
+}
+
+.secondary-border {
+	border-color: var(--secondary);
+}
+
+.highlight-border {
+	border-color: var(--highlight);
+}
+
+.red-border {
+	border-color: var(--red);
+}
+
+.pink-border {
+	border-color: var(--pink);
+}
+
+.purple-border {
+	border-color: var(--purple);
+}
+
+.blue-border {
+	border-color: var(--blue);
+}
+
+.green-border {
+	border-color: var(--green);
+}
+
+.yellow-border {
+	border-color: var(--yellow);
+}
+
+.orange-border {
+	border-color: var(--orange);
+}
+
+.brown-border {
+	border-color: var(--brown);
+}
+
+.gray-border {
+	border-color: var(--gray);
+}
+
+.black-border {
+	border-color: var(--black);
+}
+
+.white-border {
+	border-color: var(--white);
+}
+
+/*
+This is a grid system based on row and columns.
+Each row is divided into 12 columns.
+In order to improve responsivity,
+there's a pack of classes for each
+kind of screens.
+
+xs :	eXtra Small
+s  :	Small
+m  :	Medium
+l  :	Large
+xl :	eXtra Large
+*/
+
+/* Represents a grid line */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+  float: left;
+}
+
+/* Represents a grid column */
+.col {
+  float: left;
+  padding: 0.75rem;
+  min-height: 1px;
+}
+
+/* eXtra Small */
+@media only screen {
+	/* Sets the columns width in eXtra Small screens */
+	.xs1  { width: 8.33%;  }
+	.xs2  { width: 16.66%; }
+	.xs3  { width: 25%;    }
+	.xs4  { width: 33.33%; }
+	.xs5  { width: 41.66%; }
+	.xs6  { width: 50%;    }
+	.xs7  { width: 58.33%; }
+	.xs8  { width: 66.66%; }
+	.xs9  { width: 75%;    }
+	.xs10 { width: 83.33%; }
+	.xs11 { width: 91.66%; }
+	.xs12 { width: 100%;   }
+
+	/* Sets the columns margin-left in eXtra Small screens */
+	.offset-xs1  { margin-left: 8.33%;  }
+	.offset-xs2  { margin-left: 16.66%; }
+	.offset-xs3  { margin-left: 25%;	}
+	.offset-xs4  { margin-left: 33.33%; }
+	.offset-xs5  { margin-left: 41.66%; }
+	.offset-xs6  { margin-left: 50%;	}
+	.offset-xs7  { margin-left: 58.33%; }
+	.offset-xs8  { margin-left: 66.66%; }
+	.offset-xs9  { margin-left: 75%;	}
+	.offset-xs10 { margin-left: 83.33%; }
+	.offset-xs11 { margin-left: 91.66%; }
+	.offset-xs12 { margin-left: 100%;	}
+
+}
+
+/* Small */
+@media only screen and (min-width: 351px) {
+
+	/* Sets the columns width in Small screens */
+	.s1  { width: 8.33%;  }
+	.s2  { width: 16.66%; }
+	.s3  { width: 25%; 	  }
+	.s4  { width: 33.33%; }
+	.s5  { width: 41.66%; }
+	.s6  { width: 50%;    }
+	.s7  { width: 58.33%; }
+	.s8  { width: 66.66%; }
+	.s9  { width: 75%;    }
+	.s10 { width: 83.33%; }
+	.s11 { width: 91.66%; }
+	.s12 { width: 100%;   }
+
+	/* Sets the columns margin-left in Small screens */
+	.offset-s1  { margin-left: 8.33%;  }
+	.offset-s2  { margin-left: 16.66%; }
+	.offset-s3  { margin-left: 25%;    }
+	.offset-s4  { margin-left: 33.33%; }
+	.offset-s5  { margin-left: 41.66%; }
+	.offset-s6  { margin-left: 50%;    }
+	.offset-s7  { margin-left: 58.33%; }
+	.offset-s8  { margin-left: 66.66%; }
+	.offset-s9  { margin-left: 75%;    }
+	.offset-s10 { margin-left: 83.33%; }
+	.offset-s11 { margin-left: 91.66%; }
+	.offset-s12 { margin-left: 100%;   }
+
+}
+
+/* Medium */
+@media only screen and (min-width: 768px) {
+
+	/* Sets the columns width in Medium screens */
+	.m1	 { width: 8.33%;  }
+	.m2	 { width: 16.66%; }
+	.m3	 { width: 25%;	  }
+	.m4	 { width: 33.33%; }
+	.m5	 { width: 41.66%; }
+	.m6	 { width: 50%;	  }
+	.m7	 { width: 58.33%; }
+	.m8	 { width: 66.66%; }
+	.m9	 { width: 75%;	  }
+	.m10 { width: 83.33%; }
+	.m11 { width: 91.66%; }
+	.m12 { width: 100%;   }
+
+	/* Sets the columns margin-left in Medium screens */
+	.offset-m1 	{ margin-left: 8.33%;  }
+	.offset-m2 	{ margin-left: 16.66%; }
+	.offset-m3 	{ margin-left: 25%;    }
+	.offset-m4 	{ margin-left: 33.33%; }
+	.offset-m5 	{ margin-left: 41.66%; }
+	.offset-m6 	{ margin-left: 50%;    }
+	.offset-m7 	{ margin-left: 58.33%; }
+	.offset-m8 	{ margin-left: 66.66%; }
+	.offset-m9 	{ margin-left: 75%;    }
+	.offset-m10 { margin-left: 83.33%; }
+	.offset-m11 { margin-left: 91.66%; }
+	.offset-m12 { margin-left: 100%;   }
+
+}
+
+/* Large */
+@media only screen and (min-width: 992px) {
+
+	/* Sets the columns width in Large screens */
+	.l1  { width: 8.33%;  }
+	.l2  { width: 16.66%; }
+	.l3  { width: 25%;    }
+	.l4  { width: 33.33%; }
+	.l5  { width: 41.66%; }
+	.l6  { width: 50%;    }
+	.l7  { width: 58.33%; }
+	.l8  { width: 66.66%; }
+	.l9  { width: 75%;    }
+	.l10 { width: 83.33%; }
+	.l11 { width: 91.66%; }
+	.l12 { width: 100%;   }
+
+	/* Sets the columns margin-left in Large screens */
+	.offset-l1  { margin-left: 8.33%;  }
+	.offset-l2  { margin-left: 16.66%; }
+	.offset-l3  { margin-left: 25%;    }
+	.offset-l4  { margin-left: 33.33%; }
+	.offset-l5  { margin-left: 41.66%; }
+	.offset-l6  { margin-left: 50%;    }
+	.offset-l7  { margin-left: 58.33%; }
+	.offset-l8  { margin-left: 66.66%; }
+	.offset-l9  { margin-left: 75%;    }
+	.offset-l10 { margin-left: 83.33%; }
+	.offset-l11 { margin-left: 91.66%; }
+	.offset-l12 { margin-left: 100%;   }
+
+}
+
+/* eXtra Large */
+@media only screen and (min-width: 1500px) {
+
+	/* Sets the columns width in eXtra Large screens */
+	.xl1  { width: 8.33% !important;  }
+	.xl2  { width: 16.66% !important; }
+	.xl3  { width: 25% !important;    }
+	.xl4  { width: 33.33% !important; }
+	.xl5  { width: 41.66% !important; }
+	.xl6  { width: 50% !important;    }
+	.xl7  { width: 58.33% !important; }
+	.xl8  { width: 66.66% !important; }
+	.xl9  { width: 75% !important;    }
+	.xl10 { width: 83.33% !important; }
+	.xl11 { width: 91.66% !important; }
+	.xl12 { width: 100% !important;   }
+
+	/* Sets the columns margin-left in eXtra Large screens */
+	.offset-xl1  { margin-left: 8.33% !important;  }
+	.offset-xl2  { margin-left: 16.66% !important; }
+	.offset-xl3  { margin-left: 25% !important;    }
+	.offset-xl4  { margin-left: 33.33% !important; }
+	.offset-xl5  { margin-left: 41.66% !important; }
+	.offset-xl6  { margin-left: 50% !important;    }
+	.offset-xl7  { margin-left: 58.33% !important; }
+	.offset-xl8  { margin-left: 66.66% !important; }
+	.offset-xl9  { margin-left: 75% !important;    }
+	.offset-xl10 { margin-left: 83.33% !important; }
+	.offset-xl11 { margin-left: 91.66% !important; }
+	.offset-xl12 { margin-left: 100% !important;   }
+
+}
+
+
+/*
+This is a pack of layout classes
+*/
+
+
+/* Float right */
+.right {
+	float: right;
+}
+
+/* Float left */
+.left {
+	float: left;
+}
+
+/* Display flex container */
+.flex {
+	display: flex;
+}
+
+/* Left aligned content */
+.flex.left-content {
+	justify-content: flex-start;
+}
+
+/* Center aligned content */
+.flex.center {
+	justify-content: center;
+}
+
+/* Right aligned content */
+.flex.right-content {
+	justify-content: flex-end;
+}
+
+/* Content starts on container's top */
+.flex.top {
+	align-items: flex-start;
+}
+
+/* Vertical align content */
+.flex.middle {
+	align-items: center;
+}
+
+/* Content starts on container's bottom */
+.flex.bottom {
+	align-items: flex-end;
+}
+
+/* Left alignment */
+.flex > .left {
+	float: none;
+	margin-right: auto;
+}
+
+/* Center alignment */
+.flex > .center {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Right alignment */
+.flex > .right {
+	float: none;
+	margin-left: auto;
+}
+
+/* Begin on top */
+.flex > .top {
+	align-self: flex-start;
+}
+
+/* Begin on middle */
+.flex > .middle {
+	align-self: center;
+}
+
+/* Begin on bottom */
+.flex > .bottom {
+	align-self: flex-end;
+}
+
+/* Helpers */
+
+/* Hiding/Showing Content */
+
+/*
+Defines when some content
+should be hidden/shown by
+the screens sizes
+*/
+
+.hide, [class*="show-"]{
+	display: none !important;
+}
+
+/* Hidden/shown on small screens */
+@media only screen and (max-width: 767px) {
+	.hide-on-small, .hide-on-medium-and-down {
+		display: none !important;
+	}
+
+	.show-on-small, .show-on-medium-and-down {
+		display: block !important;
+	}
+
+}
+
+/* Hidden/shown on medium screens */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+	.hide-on-medium-and-down, .hide-on-medium, .hide-on-medium-and-up {
+		display: none !important;
+	}
+
+	.show-on-medium-and-down, .show-on-medium, .show-on-medium-and-up {
+		display: block !important;
+	}
+
+}
+
+/* Hidden/shown on large screens */
+@media only screen and (min-width: 992px) {
+	.hide-on-medium-and-up, .hide-on-large {
+		display: none !important;
+	}
+
+	.show-on-medium-and-up, .show-on-large {
+		display: block !important;
+	}
+}
+
+/* General utilities */
+
+/* Horizontal line */
+.divider {
+	/* todo */
+}
+
+/* Clears default text-decorations */
+.clean {
+	color: inherit;
+	text-decoration: none;
+}
+
+/* Rounded */
+.round {
+	border-radius: var(--round);
+}
+
+/* Left rounded */
+.round-left {
+	border-radius: var(--round) 0 0 var(--round);
+}
+
+/* Top rounded */
+.round-top {
+	border-radius: var(--round) var(--round) 0 0;
+}
+
+/* Right rounded */
+.round-right {
+	border-radius: 0 var(--round) var(--round) 0;
+}
+
+/* Bottom rounded */
+.round-bottom {
+	border-radius: 0 0 var(--round) var(--round);
+}
+
+
+/* Typography */
+
+/* Text alignment */
+
+/* Left-aligned text */
+.left-align {
+	text-align: left;
+}
+
+/* Center-aligned text */
+.center-align {
+	text-align: center;
+}
+
+/* Right-aligned text */
+.right-align {
+	text-align: right;
+}
+
+/* Justified text */
+.justify {
+	text-align: justify;
+}
+
+
+/* Text style */
+
+/* Bold */
+.bold {
+	font-weight: bold;
+}
+
+/* Italic */
+.italic {
+	font-style: italic;
+}
+
+/* Overline */
+.overline {
+	text-decoration: overline;
+}
+
+/* Strikethrough */
+.strikethrough {
+	text-decoration: line-through;
+}
+
+/* Underline */
+.underline {
+	text-decoration: underline;
+}
+
+/* Both under and over line */
+.underover {
+	text-decoration: underline overline;
+}
+
+
+/* Text components */
+
+/* Headers */
+h1 { font-size: 40px; }
+h2 { font-size: 30px; }
+h3 { font-size: 25px; }
+h4 { font-size: 20px; }
+
+/* Text utilities */
+
+/* Truncates overflow text */
+.truncate {
+	white-space: nowrap; 
+  	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* Tooltipped */
+.tooltip {
+	position: relative;
+}
+
+/* todo */
+/* Tooltip text */
+.tooltip:hover:before {
+	content: attr(tip);
+	background-color: var(--black);
+	padding: 5px;
+	font-size: 12px;
+	color: white;
+	border-radius: var(--round);
+	position: absolute;
+	top: 100%;
+
+}
+
+/* todo */
+/* Tootltip arrow */
+.tooltip:hover:after {
+	content: "";
+}
+
+
+
+
+/* Components */
+
+/* App */
+.app {
+	min-height: 100vh;
+	min-width: 100wh;
+	background-color: var(--primary);
+}
+
+/* Container */
+.container {
+	padding: 3%;
+	background-color: var(--secondary);
+	border-radius: var(--round);
+}
+
+/* Navbar */
+
+.navbar {
+	width: 100%;
+	height: 55px;
+	position: relative;
+	background-color: var(--white);
+	box-shadow: var(--shadow);
+	color: var(--black);
+	display: flex;
+	align-items: center;
+	padding: 0 10px 0 10px;
+}
+
+/* Fixed Navbar */
+.navbar.fixed {
+	position: fixed !important;
+}
+
+/* Left-aligned content navbar */
+.navbar.left {
+	justify-content: flex-start;
+}
+
+/* Center-aligned content navbar */
+.navbar.center {
+	justify-content: center;
+}
+
+/* Right-aligned content navbar */
+.navbar.right {
+	justify-content: flex-end;
+}
+
+/* Left alignment */
+.navbar > .left {
+	float: none;
+	margin-right: auto;
+}
+
+/* Center alignment */
+.navbar > .center {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Right alignment */
+.navbar > .right {
+	float: none;
+	margin-left: auto;
+}
+
+
+/* Clears default text-decorations from all a elements inside .navbar */
+.navbar a {
+	color: inherit;
+	text-decoration: none;
+}
+
+/* Resets the default ul style */
+.navbar ul {
+	min-height: 100%;
+	list-style: none;
+	display: inline-block;
+}
+
+/* Resets the default li style */
+.navbar ul li {
+	min-height: 55px;
+	float: left;
+	margin-left: 20px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	padding: 5px;
+	background-color: transparent;
+}
+
+/* li hoverable */
+ul.hover li:hover {
+	background-color: var(--hover) !important;
+}
+
+
+/* Form */
+
+/* Form input wrapper */
+.input-field, .input-box {
+	position: relative;
+	padding: 0;
+}
+
+/* Adds a margin to separate sequencial fields */
+[class*="input-"] + [class*="input-"] {
+	margin-top: 30px;
+}
+
+/* Inputs */
+.input-field input, .input-box input, .input-field textarea, .input-box textarea {
+	height: 35px;
+	font-family: inherit;
+	outline: none;
+	box-shadow: none !important;
+	text-indent: 10px;
+	background-color: transparent !important;
+	color: var(--highlight);
+	transition: border var(--fast) linear;
+	min-width: 100%;
+}
+
+/* Input/Textarea underline */
+.input-field input, .input-field textarea {
+	border: none;
+	border-bottom: 1px solid var(--highlight);
+}
+
+/* Textarea size and resize */
+[class*="input-"] textarea {
+	text-indent: 0;
+	padding: 10px;
+	height: 50px;
+	resize: none;
+	overflow: hidden;
+}
+
+/* Input/Textarea underline focus */
+.input-field input:focus, .input-field textarea:focus {
+	border-bottom-color: var(--highlight);
+}
+
+/* Input/Textarea boxed */
+.input-box input, .input-box textarea {
+	border-radius: var(--round);
+	border: 1px solid var(--highlight);
+}
+
+/* Input/Textarea underline focus */
+.input-box input:focus, .input-box textarea:focus {
+	border-color: var(--highlight);
+}
+
+/* Placeholder color */
+::placeholder {
+	color: var(--highlight);
+	opacity: 1; /* Firefox */
+  }
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: var(--highlight);
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+	color: var(--highlight);
+}
+
+/* Remove autofill yellow background */
+input:-webkit-autofill, textarea:-webkit-autofill {
+    transition: all 0s linear 5000s;
+}
+
+/* Button */
+.input-field button {
+	margin-top: 5px;
+	height: 40px;
+	width: 100%;
+	min-width: none;
+	font-family: inherit;
+	outline: none;
+	box-shadow: none !important;
+	text-indent: 10px;
+	transition: border 0.2s;
+	color: var(--highlight);
+	border: 1px solid var(--highlight);
+	border-radius: 5px;
+	background-color: transparent;
+	font-weight: bold !important;
+	cursor: pointer;
+	transition: opacity 0.5s;
+}
+
+/* Button focus */
+.input-field button:active {
+	opacity: 0.6;
+}
+
+/* Spinners */
+
+.spinner-border {
+	border-radius: 50%;
+	width: 2rem;
+	height: 2rem;
+	border: .25em solid;
+	border-right: .25em solid transparent;
+	animation: spinner-border .75s linear infinite;
+}
+
+@keyframes spinner-border {
+	to {
+		-ms-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
