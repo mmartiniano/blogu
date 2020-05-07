@@ -2,7 +2,7 @@ import React from 'react'
 import '../stylesheets/lune.css'
 
 /* 
-* Input component
+* Button component
 *
 * props
 *   - type: set button type
