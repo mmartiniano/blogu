@@ -1,5 +1,5 @@
 import React from 'react'
-import '../stylesheets/lune.css'
+import '../../stylesheets/lune.css'
 
 /* 
 * Input component
