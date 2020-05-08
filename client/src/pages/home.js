@@ -1,5 +1,6 @@
 import React from 'react'
 import '../stylesheets/lune.css'
+import Logo from '../components/general/logo'
 import LoginForm from '../components/form/login_form'
 import SignupForm from '../components/form/signup_form'
 import DividerText from '../components/general/divider_text'
@@ -31,11 +32,14 @@ class Home extends React.Component {
     render() {
 
         return (
-            <div className="full-screen flex middle">
-                <div className="container col s4 offset-s4">
-                    {this.state.forms[this.state.switch]}
-                    <DividerText text="or" classes="bold secondary"/>
-                    <Button label={this.state.button[this.state.switch]} onClick={this.shift}/>
+            <div className="full-screen flex middle center">
+                <div className="container col l4 m6 row center single-content flex middle">
+                    <div className="col s12">
+                        <Logo/>
+                        {this.state.forms[this.state.switch]}
+                        <DividerText text="or" classes="bold secondary"/>
+                        <Button label={this.state.button[this.state.switch]} onClick={this.shift}/>
+                    </div>
                 </div>
             </div>
         )
