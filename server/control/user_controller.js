@@ -4,59 +4,29 @@
 * Implements User business logics
 */
 
-// Import 
+// Import
+const jwt = require('jsonwebtoken')
+const Auth = require('../auth') // Access token manager
+const UserDTO = require('../model/user_dto') // User data transfer object
 const User = require('../model/user') // User model
 const UserService = require('../service/user_service') // User service
+const PostService = require('../service/post_service') // Post service
 const UserException = require('../exception/user_exception') // User Exception
+const PostException = require('../exception/post_exception') // Post Exception
+const AuthenticationException = require('../exception/authentication_exception') // Authentication Exception
 const NotFoundException = require('../exception/not_found_exception') // Not Found Exception
 const EntityMountException = require('../exception/entity_mount_exception') // Entity Mount Exception
 
-// User API
+// User authentication control
 
 /*
-* List all users.
+* Sign up
 *
-* process GET requests at '/api/user'
+* process POST requests at '/api/auth/signup'
 *
-* @return: json list of users
+* response: accenew registred user info
 */
-function list(request, response) {
-    UserService.list((error, documents) => {
-        if (error) {
-            const exception = serviceExceptionHandler(error)
-            response.status(exception.code).json([exception.message])
-        } else
-            response.status(200).json(documents)
-    })
-}
-
-/*
-* Read specific user.
-*
-* process GET requests at '/api/user/:id'
-*
-* @return: user info as json
-*/
-function read(request, response) {
-    id = request.params.id
-
-    UserService.getById(id, (error, document) => {
-        if (error) {
-            const exception = serviceExceptionHandler(error)
-            response.status(exception.code).json([exception.message])
-        } else
-            response.status(200).json(document)
-    })
-}
-
-/*
-* Create user
-*
-* process POST requests at '/api/user'
-*
-* @return: new registred user info as json
-*/
-async function create(request, response) {
+async function signup(request, response) {
 
     let user = new User({
         name: request.body.name,
@@ -84,10 +54,91 @@ async function create(request, response) {
         if (error) {
             const exception = serviceExceptionHandler(error)
             response.status(exception.code).json([exception.message])
-        } else
-            response.status(201).json(newUser)
+        } else {
+            data = new UserDTO(newUser)
+
+            response.status(201).send({
+                ...data,
+                token: Auth.generateToken(newUser)
+            })
+        }
     });
 
+}
+
+/*
+* Sign in
+*
+* process POST requests at '/api/auth/signin'
+*
+* response: new registred user info
+*/
+function signin(request, response) {
+
+    // Check if username and password are set
+    if (!request.body.username || !request.body.password) {
+        const exception = new EntityMountException()
+        return response.status(exception.code).json([exception.message])   
+    }
+
+    UserService.getByUsername(request.body.username, (error, user) => {
+        if (user) {
+
+            if (user.password == request.body.password) {
+                data = new UserDTO(user)
+
+                return response.status(200).send({
+                    ...data,
+                    token: Auth.generateToken(user)
+                })
+            }
+        }
+
+        const exception = new AuthenticationException()
+        response.status(exception.code).json([exception.message])
+    })
+}
+
+
+// User API
+
+/*
+* List all users.
+*
+* process GET requests at '/api/user'
+*
+* @return: json list of users
+*/
+function list(request, response) {
+    UserService.list((error, documents) => {
+        if (error) {
+            const exception = serviceExceptionHandler(error)
+            return response.status(exception.code).json([exception.message])
+        }
+
+        let users = documents.map( user => { return new UserDTO(user) })
+        response.status(200).json(users)
+    })
+}
+
+/*
+* Read specific user.
+*
+* process GET requests at '/api/user/:id'
+*
+* @return: user info as json
+*/
+function read(request, response) {
+    id = request.params.id
+
+    UserService.getById(id, (error, document) => {
+        if (error) {
+            const exception = serviceExceptionHandler(error)
+            return response.status(exception.code).json([exception.message])
+        }
+
+        response.status(200).json(new UserDTO(document))
+    })
 }
 
 /*
@@ -127,9 +178,10 @@ async function update(request, response) {
     UserService.update(user, (error, updatedUser) => {
         if (error) {
             const exception = serviceExceptionHandler(error)
-            response.status(exception.code).json([exception.message])
-        } else
-            response.status(200).json(updatedUser)
+            return response.status(exception.code).json([exception.message])
+        }
+        
+        response.status(200).json(new UserDTO(updatedUser))
     });
 
 }
@@ -149,14 +201,22 @@ function remove(request, response) {
     UserService.delete(id, error => {
         if (error) {
             const exception = serviceExceptionHandler(error)
-            response.status(exception.code).json([exception.message])
-        } else
-            response.status(200).send()
+            return response.status(exception.code).json([exception.message])
+        }
+
+        PostService.deleteByUserId(id, error => {
+            if (error) {
+                const exception = serviceExceptionHandler(error)
+                response.status(exception.code).json([exception.message])
+            }
+        })
+
+        response.status(200).send({
+            token: null
+        })
     });
 
 }
-
-module.exports = { list, read, create, update, remove }
 
 // Util
 
@@ -205,7 +265,7 @@ function keepUniquenessIntegrity(user) {
 // Define exception
 function serviceExceptionHandler(exception) {
 
-    if (! (exception instanceof UserException || exception instanceof NotFoundException)) {
+    if (! (exception instanceof UserException || exception instanceof PostException || exception instanceof NotFoundException)) {
         exception.code = 500
         exception.message = "Unhandled exception."
     }
@@ -213,3 +273,5 @@ function serviceExceptionHandler(exception) {
     return exception
 
 }
+
+module.exports = { signup, signin, list, read, update, remove }

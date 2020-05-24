@@ -55,7 +55,7 @@ module.exports = {
     /*
     * Get Post by user
     *
-    * Try to get a post by its author (user)
+    * Try to get posts by their author (user)
     * 
     * @param: user id: id of the author
     * @param: callback: function to recieve posts found or error
@@ -129,4 +129,16 @@ module.exports = {
         });
     },
 
+    deleteByUserId(userId, callback) {
+        Post.deleteMany({author: userId}, (error) => {
+            if (error) {
+                if (illFormedId(userId))
+                    callback(new NotFoundException())
+                else
+                    callback(new PostException('Failed to delete posts.'))
+            }       
+            else 
+                callback(null)
+        })
+    }
 }

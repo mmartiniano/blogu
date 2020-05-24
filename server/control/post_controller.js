@@ -59,7 +59,7 @@ function read(request, response) {
 function create(request, response) {
 
     let post = new Post({
-        author: request.body.author,
+        author: request.userId,
         title: request.body.title,
         created_at: Date.now(),
         text: request.body.text
@@ -95,7 +95,7 @@ function update(request, response) {
 
     let post = new Post({
         _id: request.params.id,
-        author: request.body.author,
+        author: request.userId,
         title: request.body.title,
         updated_at: Date.now(),
         text: request.body.text

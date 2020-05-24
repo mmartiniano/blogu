@@ -13,17 +13,26 @@ const cors = require('cors')
 
 // Database connection
 
+mongoose.Promise = global.Promise
+
 let databaseURL = process.env.MONGODB_URI || process.env.DATABASE_URL
 
 mongoose.connect(databaseURL, { 
+    
     useFindAndModify: false,
     useNewUrlParser: true,
     useUnifiedTopology: true 
+
+}).then( () => {
+
+    console.log('Successfully connect to MongoDB')
+
+}).catch( error => {
+
+    console.log('Failed to connect to MongoDB', error)
+    process.exit()
+
 })
-
-mongoose.Promise = global.Promise
-
-mongoose.connection.on('error', console.error.bind(console, `Failed to connect database ${databaseURL}`))
 
 // Server port
 const port = process.env.PORT || 3001
@@ -35,7 +44,7 @@ app.use(cors())
 
 // Request parser
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded( {extended: false} ))
+app.use(bodyParser.urlencoded( {extended: true} ))
 
 // Routes
 app.use(require('./route/api'))
