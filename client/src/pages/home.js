@@ -6,6 +6,8 @@ import SignupForm from '../components/form/signup_form'
 import DividerText from '../components/general/divider_text'
 import Button from '../components/form/button'
 
+import AuthService from '../services/auth_service'
+
 /*
 * Blogu Homepage
 *
@@ -19,14 +21,32 @@ class Home extends React.Component {
         super(props)
 
         this.state = {
-            forms: [<LoginForm/>, <SignupForm/>],
-            button: ["Sign up", "Log in"],
-            switch: 0
+            message: '',
+            switch: true
         }
     }
 
-    shift = () => {
-        this.setState({ switch: this.state.switch ^ 1 })
+    toggle = () => {
+        this.setState({ switch: !this.state.switch, message: '' })
+    }
+
+    login = (credentials) => {
+        AuthService.login(credentials).then( response => {
+           // window.location.reload();
+           this.setState({ message: 'Successfully authenticated'})
+        }, error => {
+            this.setState({ message: error.toString() })
+            console.log(error.response)
+        })
+    }
+    
+    signup = (credentials) => {
+        AuthService.signup(credentials).then( response => {
+           // window.location.reload();
+           this.setState({ message: 'Successfully registred'})
+        }, error => {
+            this.setState({ message: error.toString() })
+        })
     }
 
     render() {
@@ -36,9 +56,16 @@ class Home extends React.Component {
                 <div className="container col l4 m6 row center single-content flex middle">
                     <div className="col s12">
                         <Logo/>
-                        {this.state.forms[this.state.switch]}
+                        {this.state.message && (
+                            <span className="red-text">{this.state.message}</span>
+                        )}
+                        {this.state.switch ? (
+                            <LoginForm onSubmit={this.login}/>
+                        ) : (
+                            <SignupForm onSubmit={this.signup}/>
+                        )}
                         <DividerText text="or" classes="bold secondary"/>
-                        <Button label={this.state.button[this.state.switch]} onClick={this.shift}/>
+                        <Button label={this.state.switch ? 'Sign Up' : 'Log in'} onClick={this.toggle}/>
                     </div>
                 </div>
             </div>
