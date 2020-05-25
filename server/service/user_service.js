@@ -23,7 +23,7 @@ module.exports = {
     save(user, callback) {
        user.save((error, document) => {
         if (error)
-            callback(new UserException('Failed to create user.'), null)
+            callback(new UserException(UserException.CREATE), null)
         else
             callback(null, document)
        });
@@ -43,7 +43,7 @@ module.exports = {
                 if (illFormedId(id))
                     callback(new NotFoundException(), null)
                 else
-                    callback(new UserException('Failed to get user.'), null)
+                    callback(new UserException(UserException.GET), null)
             }
             else if (document)
                 callback(null, document)
@@ -63,7 +63,7 @@ module.exports = {
     getByUsername(username, callback) {
         User.findOne({username: username}, (error, document) => {
             if (error)
-                callback(new UserException('Failed to get user.'), null)
+                callback(new UserException(UserException.GET), null)
             else if (document)
                 callback(null, document)
             else
@@ -81,7 +81,7 @@ module.exports = {
     list(callback) {
         User.find({}, (error, documents) => {
             if (error)
-                callback(new UserException('Failed to get users.'), null)
+                callback(new UserException(UserException.LIST), null)
             else 
                 callback(null, documents)
         })
@@ -101,7 +101,7 @@ module.exports = {
                 if (illFormedId(user._id))
                     callback(new NotFoundException(), null)
                 else
-                    callback(new UserException('Failed to update user.'), null)
+                    callback(new UserException(UserException.UPDATE), null)
             }
             else if (document)
                 callback(null, document)
@@ -124,7 +124,7 @@ module.exports = {
                 if (illFormedId(id))
                     callback(new NotFoundException())
                 else
-                    callback(new UserException('Failed to delete user.'))
+                    callback(new UserException(UserException.DELETE))
             }
             else 
                 callback(null)

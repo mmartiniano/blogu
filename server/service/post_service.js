@@ -23,7 +23,7 @@ module.exports = {
     save(post, callback) {
        post.save((error, document) => {
         if (error)
-            callback(new PostException('Failed to create post.'), null)
+            callback(new PostException(PostException.CREATE), null)
         else
             callback(null, document)
        });
@@ -43,7 +43,7 @@ module.exports = {
                 if (illFormedId(id))
                     callback(new NotFoundException(), null)
                 else
-                    callback(new PostException('Failed to get post.'), null)
+                    callback(new PostException(PostException.GET), null)
             }
             else if (document)
                 callback(null, document)
@@ -63,7 +63,7 @@ module.exports = {
     getByUserId(userId, callback) {
         Post.find({author: userId}, (error, documents) => {
             if (error)
-                callback(new PostException('Failed to get posts from user.'), null)
+                callback(new PostException(PostException.GET_FROM_USER), null)
             else 
                 callback(null, documents)
         });
@@ -79,7 +79,7 @@ module.exports = {
     list(callback) {
         Post.find({}, (error, documents) => {
             if (error)
-                callback(new PostException('Failed to get posts.'), null)
+                callback(new PostException(PostException.LIST), null)
             else 
                 callback(null, documents)
         })
@@ -99,7 +99,7 @@ module.exports = {
                 if (illFormedId(post._id))
                     callback(new NotFoundException())
                 else
-                    callback(new PostException('Failed to update post.'), null)
+                    callback(new PostException(PostException.UPDATE), null)
             }  
             else if (document)
                 callback(null, document)
@@ -122,7 +122,7 @@ module.exports = {
                 if (illFormedId(id))
                     callback(new NotFoundException())
                 else
-                    callback(new PostException('Failed to delete post.'))
+                    callback(new PostException(PostException.DELETE))
             }       
             else 
                 callback(null)
@@ -135,7 +135,7 @@ module.exports = {
                 if (illFormedId(userId))
                     callback(new NotFoundException())
                 else
-                    callback(new PostException('Failed to delete posts.'))
+                    callback(new PostException(PostException.DELETE_FROM_USER))
             }       
             else 
                 callback(null)

@@ -16,4 +16,10 @@ class UserException extends Error {
     }
 }
 
+UserException.CREATE = 'Failed to create user'
+UserException.GET = 'Failed to get user'
+UserException.LIST = 'Failed to list user'
+UserException.UPDATE = 'Failed to update user'
+UserException.DELETE = 'Failed to delete user'
+
 module.exports = UserException

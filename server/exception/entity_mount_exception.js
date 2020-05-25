@@ -12,7 +12,7 @@
 */
 
 class EntityMountException extends Error {  
-    constructor (message = 'Failed to mount entity.', code = 403) {
+    constructor (message = 'Required fields are not set properly', code = 403) {
         super(message)
 
         this.code = code

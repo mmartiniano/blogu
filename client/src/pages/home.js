@@ -1,12 +1,14 @@
 import React from 'react'
 import '../stylesheets/lune.css'
 import Logo from '../components/general/logo'
+import FormMessage from '../components/form/form_message'
 import LoginForm from '../components/form/login_form'
 import SignupForm from '../components/form/signup_form'
 import DividerText from '../components/general/divider_text'
 import Button from '../components/form/button'
 
 import AuthService from '../services/auth_service'
+import { Context } from '../context'
 
 /*
 * Blogu Homepage
@@ -17,6 +19,9 @@ import AuthService from '../services/auth_service'
 */
 
 class Home extends React.Component {
+
+    static contextType = Context
+
     constructor(props) {
         super(props)
 
@@ -31,44 +36,52 @@ class Home extends React.Component {
     }
 
     login = (credentials) => {
-        AuthService.login(credentials).then( response => {
-           // window.location.reload();
-           this.setState({ message: 'Successfully authenticated'})
-        }, error => {
-            this.setState({ message: error.toString() })
-            console.log(error.response)
+
+        this.context.togglePreloader()
+
+        AuthService.login(credentials)
+        .then( response => {
+           window.location.reload();
         })
+        .catch( error => {
+            this.setState({ message: error.response.data })
+        })
+        .then( this.context.togglePreloader )
     }
     
     signup = (credentials) => {
+
+        this.context.togglePreloader()
+
         AuthService.signup(credentials).then( response => {
-           // window.location.reload();
-           this.setState({ message: 'Successfully registred'})
-        }, error => {
-            this.setState({ message: error.toString() })
+           window.location.reload();
         })
+        .catch( error => {
+            this.setState({ message: error.response.data })
+        })
+        .then( this.context.togglePreloader )
     }
 
     render() {
 
         return (
-            <div className="full-screen flex middle center">
-                <div className="container col l4 m6 row center single-content flex middle">
-                    <div className="col s12">
-                        <Logo/>
-                        {this.state.message && (
-                            <span className="red-text">{this.state.message}</span>
-                        )}
-                        {this.state.switch ? (
-                            <LoginForm onSubmit={this.login}/>
-                        ) : (
-                            <SignupForm onSubmit={this.signup}/>
-                        )}
-                        <DividerText text="or" classes="bold secondary"/>
-                        <Button label={this.state.switch ? 'Sign Up' : 'Log in'} onClick={this.toggle}/>
+                <div className="full-screen flex middle center">
+                    <div className="container col l4 m6 row center single-content flex middle">
+                        <div className="col s12">
+                            <Logo/>
+                            {this.state.message && (
+                                <FormMessage type="fail" text={this.state.message}/>
+                            )}
+                            {this.state.switch ? (
+                                <LoginForm onSubmit={this.login}/>
+                            ) : (
+                                <SignupForm onSubmit={this.signup}/>
+                            )}
+                            <DividerText text="or" classes="bold secondary"/>
+                            <Button label={this.state.switch ? 'Sign Up' : 'Log in'} onClick={this.toggle}/>
+                        </div>
                     </div>
                 </div>
-            </div>
         )
     }
 }

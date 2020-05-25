@@ -859,6 +859,14 @@ ul.hover li:hover {
 
 /* Form */
 
+/* Form submit message */
+.form-message {
+	margin: 10px 0 10px 0;
+	width: 100%;
+	text-align: center;
+	font-size: 15px;
+}
+
 /* Form input wrapper */
 .input-field, .input-box {
 	position: relative;
@@ -1001,5 +1009,41 @@ input:-webkit-autofill, textarea:-webkit-autofill {
 		-webkit-transform: rotate(360deg);
 		-o-transform: rotate(360deg);
 		transform: rotate(360deg);
+	}
+}
+
+.preloader {
+	height: 3px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	animation: preloader-indeterminate 1s linear infinite;
+}
+
+@keyframes preloader-indeterminate {
+	0% {
+		width: 10%;
+		left: 0;
+	}
+	25% {
+		width: 40%;
+		left: 25%;
+	}
+	50% {
+		width: 10%;
+		left: 70%;
+	}
+	100% {
+		width: 15%;
+		left: 100%;
+	}
+}
+
+@keyframes preloader-determinate {
+	from {
+		width: 0%;
+	}
+	to {
+		width: 100%;
 	}
 }

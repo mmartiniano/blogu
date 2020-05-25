@@ -16,4 +16,12 @@ class PostException extends Error {
     }
 }
 
+PostException.CREATE = 'Failed to create post'
+PostException.GET = 'Failed to get post'
+PostException.GET_FROM_USER = 'Failed to get posts from user'
+PostException.LIST = 'Failed to list post'
+PostException.UPDATE = 'Failed to update post'
+PostException.DELETE = 'Failed to delete post'
+PostException.DELETE_FROM_USER = 'Failed to delete posts from user'
+
 module.exports = PostException
