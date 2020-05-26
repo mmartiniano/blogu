@@ -35,7 +35,7 @@ export default class AuthService {
     // HTTP request header with access token
     static header() {
         if (this.user && this.user.token)
-            return { Userorization: 'Bearer ' + this.user.token}
+            return { Authorization: 'Bearer ' + this.user.token}
 
         return {}
     }
