@@ -2,17 +2,15 @@
 * Permissions control
 */
 
-const AuthorizationException = require('../exception/authorization_exception')
-const PostService = require('../service/post_service')
+const AuthorizationError = require('../../error/authorization.error')
+const PostService = require('../../service/post.service')
 
 // Account access manager
 const isOwner = (request, response, next) => {
     userId = request.params.id || request.body.id
 
-    if (request.userId != userId) {
-        const exception = new AuthorizationException()
-        return response.status(exception.code).json([exception.message])
-    }
+    if (request.userId != userId)
+        return response.status(AuthorizationError.CODE).json([AuthorizationError.MESSAGE])
 
     next()
 }
@@ -25,14 +23,11 @@ const isAuthor = (request, response, next) => {
         if (posts) {
             if (posts.filter( post => {
                 return post._id.toString == postId
-            })) {
-                next()
-                return
-            }
+            })) 
+                return next()
         }
 
-        const exception = new AuthorizationException()
-        return response.status(exception.code).json([exception.message])
+        return response.status(AuthorizationError.CODE).json([AuthorizationError.MESSAGE])
     })
 }
 

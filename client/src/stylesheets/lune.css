@@ -55,7 +55,8 @@ html, body {
 	--slow: 1s; /* Slow animation */
 	--hover:rgba(0, 0, 0, .2); /* Hover animation color */
 	--zi: 10; /* Focused z-index */
-	--shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2); /* Box shadow */
+	--shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.14); /* Box shadow */
+	--top-shadow: 0px -2px 2px 0px rgba(0,0,0,0.14); /* Box shadow */
 }
 
 /* Color scheme */
@@ -760,7 +761,7 @@ h4 { font-size: 20px; }
 }
 
 .logo.small {
-	font-size: 10px;
+	font-size: 15px;
 }
 
 .logo.medium {
@@ -787,6 +788,21 @@ h4 { font-size: 20px; }
 	display: flex;
 	align-items: center;
 	padding: 0 20px 0 20px;
+}
+
+/* Navbar mobile */
+.navbar.mobile {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	box-shadow: var(--top-shadow) !important;
+}
+
+.navbar.mobile ul {
+	width: 100%;
+	display: flex !important;
+	justify-content: space-between;
+	padding: 0;
 }
 
 /* Fixed Navbar */
@@ -844,13 +860,19 @@ h4 { font-size: 20px; }
 /* Resets the default li style */
 .navbar ul li {
 	min-height: 55px;
+	min-width: 55px;
 	float: left;
-	margin-left: 20px;
 	display: flex;
 	align-items: center;
+	justify-content: center;
+	text-align: center;
 	cursor: pointer;
 	padding: 0 10px 0 10px;
 	background-color: transparent;
+}
+
+.navbar ul a {
+	display: contents;
 }
 
 /* li hoverable */
@@ -983,6 +1005,8 @@ input:-webkit-autofill, textarea:-webkit-autofill {
 .divider-text-wrapper {
 	margin: 20px 0 20px 0;
 	position: relative;
+	display: flex;
+	align-items: center;
 }
 
 /* Text between dividers */

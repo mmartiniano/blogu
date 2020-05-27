@@ -1,5 +1,5 @@
 /*
-* Entity Mount Exception
+* Entity Mount Error
 *
 * It should be used when entity (usualy models)
 * mounting fails.
@@ -11,7 +11,7 @@
 * to do what's asked.
 */
 
-class EntityMountException extends Error {  
+class EntityMountError extends Error {  
     constructor (message = 'Required fields are not set properly', code = 403) {
         super(message)
 
@@ -20,4 +20,7 @@ class EntityMountException extends Error {
     }
 }
 
-module.exports = EntityMountException
+EntityMountError.CODE = 403
+EntityMountError.MESSAGE = 'Required fields are not set properly'
+
+module.exports = EntityMountError

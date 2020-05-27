@@ -6,9 +6,8 @@
 
 // Import
 const Post = require('../model/post') // Post model
-const PostException = require('../exception/post_exception') // Post Exception
-const NotFoundException = require('../exception/not_found_exception') // Not Found Exception
-const illFormedId = require('../util/ill_formed_id') // Valid id verifier
+const PostError = require('../error/post.error') // Post Error
+const NotFoundError = require('../error/not_found.error') // Not Found Error
 
 module.exports = {
 
@@ -23,10 +22,10 @@ module.exports = {
     save(post, callback) {
        post.save((error, document) => {
         if (error)
-            callback(new PostException(PostException.CREATE), null)
+            callback(new PostError(PostError.CREATE), null)
         else
             callback(null, document)
-       });
+       })
     },
 
     /*
@@ -39,16 +38,12 @@ module.exports = {
     */
     getById(id, callback) {
         Post.findById(id, (error, document) => {
-            if (error) {
-                if (illFormedId(id))
-                    callback(new NotFoundException(), null)
-                else
-                    callback(new PostException(PostException.GET), null)
-            }
+            if (error)
+                callback(new PostError(PostError.GET), null)
             else if (document)
                 callback(null, document)
             else
-                callback(new NotFoundException(), null)
+                callback(new NotFoundError(), null)
         })
     },
 
@@ -63,10 +58,10 @@ module.exports = {
     getByUserId(userId, callback) {
         Post.find({author: userId}, (error, documents) => {
             if (error)
-                callback(new PostException(PostException.GET_FROM_USER), null)
+                callback(new PostError(PostError.GET_FROM_USER), null)
             else 
                 callback(null, documents)
-        });
+        })
     },
 
     /*
@@ -79,7 +74,7 @@ module.exports = {
     list(callback) {
         Post.find({}, (error, documents) => {
             if (error)
-                callback(new PostException(PostException.LIST), null)
+                callback(new PostError(PostError.LIST), null)
             else 
                 callback(null, documents)
         })
@@ -95,17 +90,13 @@ module.exports = {
     */
     update(post, callback) {
         Post.findOneAndUpdate({_id: post._id}, post, {new: true}, (error, document) => {
-            if (error) {
-                if (illFormedId(post._id))
-                    callback(new NotFoundException())
-                else
-                    callback(new PostException(PostException.UPDATE), null)
-            }  
+            if (error)
+                callback(new PostError(PostError.UPDATE), null)
             else if (document)
                 callback(null, document)
             else
-                callback(new NotFoundException(), null)       
-        });
+                callback(new NotFoundError(), null)       
+        })
     },
 
     /*
@@ -118,25 +109,17 @@ module.exports = {
     */
     delete(id, callback) {
         Post.deleteOne({_id: id}, (error) => {
-            if (error) {
-                if (illFormedId(id))
-                    callback(new NotFoundException())
-                else
-                    callback(new PostException(PostException.DELETE))
-            }       
+            if (error)
+                callback(new PostError(PostError.DELETE))    
             else 
                 callback(null)
-        });
+        })
     },
 
     deleteByUserId(userId, callback) {
         Post.deleteMany({author: userId}, (error) => {
-            if (error) {
-                if (illFormedId(userId))
-                    callback(new NotFoundException())
-                else
-                    callback(new PostException(PostException.DELETE_FROM_USER))
-            }       
+            if (error)
+                callback(new PostError(PostError.DELETE_FROM_USER))     
             else 
                 callback(null)
         })

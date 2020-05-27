@@ -1,5 +1,5 @@
 /*
-* Authentication Exception
+* Authentication Error
 *
 * Fired when authentication fails.
 *
@@ -7,7 +7,7 @@
 * 401 (Unauthorized) by default.
 */
 
-class AuthenticationException extends Error {  
+class AuthenticationError extends Error {  
     constructor (message = 'Authentication failed', code = 401) {
         super(message)
 
@@ -16,4 +16,8 @@ class AuthenticationException extends Error {
     }
 }
 
-module.exports = AuthenticationException
+AuthenticationError.CODE = 401
+AuthenticationError.MESSAGE = 'Authentication failed'
+AuthenticationError.NO_TOKEN = 'No access token'
+
+module.exports = AuthenticationError

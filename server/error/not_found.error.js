@@ -1,12 +1,12 @@
 /*
-* Not Found Exception
+* Not Found Error
 *
 * Should be used when requested ressource
 * was not found.
 *
 * 'code' stands for HTTP response code. And it's always 404
 */
-class NotFoundException extends Error {  
+class NotFoundError extends Error {  
     constructor (message = 'Not Found') {
         super(message)
 
@@ -15,4 +15,4 @@ class NotFoundException extends Error {
     }
 }
 
-module.exports = NotFoundException
+module.exports = NotFoundError

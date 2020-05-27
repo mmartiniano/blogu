@@ -64,7 +64,7 @@ export default class App extends React.Component {
                                 <Link to="/"><li title="Feed"><i className="material-icons">trip_origin</i></li></Link>
                                 <Link to="/"><li title="Blog"><i className="material-icons">library_books</i></li></Link>
                                 <Link to="/"><li title="Account"><i className="material-icons">person</i></li></Link>
-                                <li onClick={this.logout} title="Log out"><i className="material-icons">exit_to_app</i></li>
+                                <Link to="/"><li onClick={this.logout} title="Log out"><i className="material-icons">exit_to_app</i></li></Link>
                             </Navbar>
                         )} 
                     </div>

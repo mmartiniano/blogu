@@ -6,9 +6,8 @@
 
 // Import
 const User = require('../model/user') // User model
-const UserException = require('../exception/user_exception') // User Exception
-const NotFoundException = require('../exception/not_found_exception') // Not Found Exception
-const illFormedId = require('../util/ill_formed_id') // Valid id verifier
+const UserError = require('../error/user.error') // User Error
+const NotFoundError = require('../error/not_found.error') // Not Found Error
 
 module.exports = {
 
@@ -23,10 +22,10 @@ module.exports = {
     save(user, callback) {
        user.save((error, document) => {
         if (error)
-            callback(new UserException(UserException.CREATE), null)
+            return callback(new UserError(UserError.CREATE), null)
         else
             callback(null, document)
-       });
+       })
     },
 
     /*
@@ -39,16 +38,12 @@ module.exports = {
     */
     getById(id, callback) {
         User.findById(id, (error, document) => {
-            if (error) {
-                if (illFormedId(id))
-                    callback(new NotFoundException(), null)
-                else
-                    callback(new UserException(UserException.GET), null)
-            }
+            if (error)
+                callback(new UserError(UserError.GET), null)
             else if (document)
                 callback(null, document)
             else
-                callback(new NotFoundException(), null)
+                callback(new NotFoundError(), null)
         })
     },
 
@@ -63,12 +58,12 @@ module.exports = {
     getByUsername(username, callback) {
         User.findOne({username: username}, (error, document) => {
             if (error)
-                callback(new UserException(UserException.GET), null)
+                callback(new UserError(UserError.GET), null)
             else if (document)
                 callback(null, document)
             else
-                callback(new NotFoundException(), null)
-        });
+                callback(new NotFoundError(), null)
+        })
     },
 
     /*
@@ -81,7 +76,7 @@ module.exports = {
     list(callback) {
         User.find({}, (error, documents) => {
             if (error)
-                callback(new UserException(UserException.LIST), null)
+                callback(new UserError(UserError.LIST), null)
             else 
                 callback(null, documents)
         })
@@ -97,17 +92,13 @@ module.exports = {
     */
     update(user, callback) {
         User.findOneAndUpdate({_id: user._id}, user, {new: true}, (error, document) => {
-            if (error) {
-                if (illFormedId(user._id))
-                    callback(new NotFoundException(), null)
-                else
-                    callback(new UserException(UserException.UPDATE), null)
-            }
+            if (error) 
+                callback(new UserError(UserError.UPDATE), null)
             else if (document)
                 callback(null, document)
             else 
-                callback(new NotFoundException(), null)
-        });
+                callback(new NotFoundError(), null)
+        })
     },
 
     /*
@@ -120,15 +111,11 @@ module.exports = {
     */
     delete(id, callback) {
         User.deleteOne({_id: id}, (error) => {
-            if (error) {
-                if (illFormedId(id))
-                    callback(new NotFoundException())
-                else
-                    callback(new UserException(UserException.DELETE))
-            }
+            if (error)
+                callback(new UserError(UserError.DELETE))
             else 
                 callback(null)
-        });
-    },
+        })
+    }
 
 }

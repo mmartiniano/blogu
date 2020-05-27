@@ -1,5 +1,5 @@
 /*
-* Authorization Exception
+* Authorization Error
 *
 * Fired when authorization fails.
 *
@@ -7,7 +7,7 @@
 * 403 (Forbidden) by default.
 */
 
-class AuthorizationException extends Error {  
+class AuthorizationError extends Error {  
     constructor (message = 'Authorization failed', code = 401) {
         super(message)
 
@@ -16,4 +16,7 @@ class AuthorizationException extends Error {
     }
 }
 
-module.exports = AuthorizationException
+AuthorizationError.CODE = 401
+AuthorizationError.MESSAGE = 'Authorization failed'
+
+module.exports = AuthorizationError

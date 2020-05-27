@@ -18,7 +18,7 @@ mongoose.Promise = global.Promise
 let databaseURL = process.env.MONGODB_URI || process.env.DATABASE_URL
 
 mongoose.connect(databaseURL, { 
-    
+    useCreateIndex: true,
     useFindAndModify: false,
     useNewUrlParser: true,
     useUnifiedTopology: true 
