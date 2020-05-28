@@ -36,7 +36,7 @@ export default class AuthService {
 
     // Current authenticated user
     static user() {
-        return JSON.parse(localStorage.getItem('user'))
+        return localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : undefined
     }
 
     // HTTP request header with access token

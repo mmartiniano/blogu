@@ -1,13 +1,14 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import AuthService from './services/auth_service'
 
 import './stylesheets/lune.css'
 
-import Navbar from './components/navigation/navbar'
+import Navbar from './components/navigation/blogu_navbar'
 import Home from './pages/home'
 import Feed from './pages/feed'
+import Account from './pages/account'
 import Preloader from './components/general/preloader'
 import { Context } from './context'
 
@@ -25,22 +26,18 @@ export default class App extends React.Component {
             })
         }
 
-        this.state = {
-            preloader: this.context.preloader,
-            togglePreloader: this.togglePreloader,
-            user: undefined
+        this.toggleAuth = () => {
+            this.setState({
+                user: AuthService.user()
+            })
         }
-    }
 
-    logout = () => {
-        this.context.togglePreloader()
-
-        AuthService.logout()
-
-        this.setState({ user: undefined })
-
-        this.context.togglePreloader()
-
+        this.state = {
+            ...this.context,
+            togglePreloader: this.togglePreloader,
+            toggleAuth: this.toggleAuth
+        }
+        
     }
 
     componentDidMount() {
@@ -62,14 +59,10 @@ export default class App extends React.Component {
                             <Home/>
                         ) : (
                             <React.Fragment>
-                                <Navbar logo="Blogu" logoLink="/" fixed={true} hover={true} ulPosition="right">
-                                    <Link to="/"><li title="Feed"><i className="material-icons">trip_origin</i></li></Link>
-                                    <Link to="/"><li title="Blog"><i className="material-icons">library_books</i></li></Link>
-                                    <Link to="/"><li title="Account"><i className="material-icons">person</i></li></Link>
-                                    <Link to="/"><li onClick={this.logout} title="Log out"><i className="material-icons">exit_to_app</i></li></Link>
-                                </Navbar>
+                                <Navbar/>
                                 <Switch>
                                     <Route exact path='/' component={Feed}/>
+                                    <Route path='/account' component={Account}/>
                                 </Switch>
                             </React.Fragment>
                         )} 

@@ -1029,7 +1029,6 @@ input:-webkit-autofill, textarea:-webkit-autofill {
 	font-family: inherit;
 	outline: none;
 	box-shadow: none !important;
-	text-indent: 10px;
 	color: var(--highlight);
 	border: 1px solid var(--highlight);
 	border-radius: 5px;
