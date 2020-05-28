@@ -7,13 +7,15 @@ import { Link } from 'react-router-dom'
 * Navbar component
 *
 * props
-*   - fixed: turn navbar position to fixed
-*       values: true | false
-*       default: false
+*   - position: set navbar position
+*       values: sticky | fixed | relative | absolute
+*       default: sticky
 *   
-*   - main: Logo name
+*   - logo: Logo name
 *
-*   - mainLink: Logo link
+*   - logoLink: Logo link
+*
+*   - mainAction: Main action component
 *
 *   - align
 *       values: left | center | right
@@ -56,22 +58,23 @@ export default class Navbar extends React.Component {
 
     render() {
 
-        const mobile = this.state.width >= this.mobileThreshold
+        const mobile = this.state.width < this.mobileThreshold
 
         return (
             <React.Fragment>
-                {mobile ? (
-                    <nav className={`navbar bold ${this.props.fixed ? 'fixed' : ''} ${this.props.align || ''}`}>
-                        <Link to={this.props.mainLink}>{this.props.main}</Link>
+                {!mobile ? (
+                    <nav className={`navbar bold ${this.props.position || 'sticky'} ${this.props.align || ''}`}>
+                        <Link to={this.props.logoLink}>{this.props.logo}</Link>
                         <ul className={`${this.props.ulPosition} ${this.props.hover? 'hover' : ''}`}>
                             {this.props.children}
+                            {this.props.mainAction}
                         </ul>
                     </nav>
 
                 ) : (
                     <React.Fragment>
-                        <header className={`navbar bold ${this.props.align || ''}`}>
-                            <Link to={this.props.mainLink} className="center">{this.props.main}</Link>
+                        <header className={`navbar sticky bold ${this.props.align || ''}`}>
+                            <Link to={this.props.logoLink} className="center">{this.props.logo}</Link>
                         </header>
 
                         <nav className={`navbar bold mobile center`}>

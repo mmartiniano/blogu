@@ -1,50 +1,79 @@
 import React from 'react'
 import '../stylesheets/lune.css'
-import Logo from '../components/general/logo'
-import LoginForm from '../components/form/login_form'
-import SignupForm from '../components/form/signup_form'
-import DividerText from '../components/general/divider_text'
-import Button from '../components/form/button'
+import Card from '../components/general/card'
+import IconMessage from '../components/general/icon_message'
+
+import PostService from '../services/post_service'
+import { Context } from '../context'
 
 /*
 * Blogu Feed
 *
-* Contains 2 forms: login and signup
-* and a switch to show/hide 'em
+* Displays all posts
 *
 */
 
 class Feed extends React.Component {
+
+    static contextType = Context
+
     constructor(props) {
         super(props)
 
         this.state = {
-            forms: [<LoginForm/>, <SignupForm/>],
-            button: ["Sign up", "Log in"],
-            switch: 0
+            posts: undefined,
+            message: ''
         }
     }
 
-    shift = () => {
-        this.setState({ switch: this.state.switch ^ 1 })
+    load = () => {
+        PostService.list()
+        .then( response => {
+            if (response.data.length > 0)
+                this.setState({
+                    posts: response.data.reverse()
+                })
+            else
+                this.setState({
+                    message: 'There are no posts'
+                })
+        })
+        .catch( error => {
+            this.setState({
+                message: 'Could not get posts'
+            })
+        })
+    }
+
+    componentDidMount() {
+        this.load()
     }
 
     render() {
 
         return (
-            <div className="full-screen flex middle center">
-                <div className="container col l4 m6 row center single-content flex middle">
-                    <div className="col s12">
-                        <Logo/>
-                        {this.state.forms[this.state.switch]}
-                        <DividerText text="or" classes="bold secondary"/>
-                        <Button label={this.state.button[this.state.switch]} onClick={this.shift}/>
+            <React.Fragment>
+                {this.state.posts ? (
+                    <div className="content flex flex-column middle">
+                        {this.state.posts.map( (post, i) => {
+                            return (
+                                <Card key={i} round={true} color="secondary">
+                                    <div>{post.title}</div>
+                                </Card>
+                            )
+                        })}
                     </div>
-                </div>
-            </div>
+                ) : (
+                    <div className="content flex middle center">
+                        {this.state.message && (
+                            <IconMessage icon="description" message={this.state.message}/>
+                        )}
+                    </div>
+                )}
+            </React.Fragment>
         )
     }
 }
 
 
-export default Home
+export default Feed

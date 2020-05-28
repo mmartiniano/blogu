@@ -7,6 +7,7 @@ import './stylesheets/lune.css'
 
 import Navbar from './components/navigation/navbar'
 import Home from './pages/home'
+import Feed from './pages/feed'
 import Preloader from './components/general/preloader'
 import { Context } from './context'
 
@@ -60,12 +61,17 @@ export default class App extends React.Component {
                         {!this.state.user ? (
                             <Home/>
                         ) : (
-                            <Navbar main="Blogu" mainLink="/" fixed={true} hover={true} ulPosition="right">
-                                <Link to="/"><li title="Feed"><i className="material-icons">trip_origin</i></li></Link>
-                                <Link to="/"><li title="Blog"><i className="material-icons">library_books</i></li></Link>
-                                <Link to="/"><li title="Account"><i className="material-icons">person</i></li></Link>
-                                <Link to="/"><li onClick={this.logout} title="Log out"><i className="material-icons">exit_to_app</i></li></Link>
-                            </Navbar>
+                            <React.Fragment>
+                                <Navbar logo="Blogu" logoLink="/" fixed={true} hover={true} ulPosition="right">
+                                    <Link to="/"><li title="Feed"><i className="material-icons">trip_origin</i></li></Link>
+                                    <Link to="/"><li title="Blog"><i className="material-icons">library_books</i></li></Link>
+                                    <Link to="/"><li title="Account"><i className="material-icons">person</i></li></Link>
+                                    <Link to="/"><li onClick={this.logout} title="Log out"><i className="material-icons">exit_to_app</i></li></Link>
+                                </Navbar>
+                                <Switch>
+                                    <Route exact path='/' component={Feed}/>
+                                </Switch>
+                            </React.Fragment>
                         )} 
                     </div>
                 </Context.Provider>

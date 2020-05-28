@@ -9,8 +9,8 @@ const mongoose = require('mongoose')
 /*
 * User database schema.
 *
-* _id, name, username, password, member_since,
-* avatar (profile image) and its posts
+* _id, name, username, password, member_since and
+* avatar (profile image)
 */
 
 let UserSchema = new mongoose.Schema({
@@ -39,12 +39,7 @@ let UserSchema = new mongoose.Schema({
         required: true
     },
 
-    avatar: String,
-
-    posts: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post'
-    }]
+    avatar: String
 })
 
 module.exports = mongoose.model('User', UserSchema)

@@ -8,7 +8,7 @@
 */
 
 class IntegrityError extends Error {  
-    constructor (message = 'Conflict', code = 403) {
+    constructor (message = 'Conflict', code = 409) {
         super(message)
 
         this.code = code
@@ -16,7 +16,7 @@ class IntegrityError extends Error {
     }
 }
 
-IntegrityError.CODE = 403
+IntegrityError.CODE = 409
 IntegrityError.MESSAGE = 'Conflict'
 IntegrityError.DUPLICATED_USERNAME = 'Username already taken'
 

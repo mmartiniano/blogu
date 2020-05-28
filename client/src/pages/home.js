@@ -41,7 +41,7 @@ class Home extends React.Component {
 
         AuthService.login(credentials)
         .then( response => {
-           window.location.reload();
+            window.location.reload()
         })
         .catch( error => {
             this.setState({ message: error.response.data })
@@ -54,7 +54,7 @@ class Home extends React.Component {
         this.context.togglePreloader()
 
         AuthService.signup(credentials).then( response => {
-           window.location.reload();
+            window.location.reload()
         })
         .catch( error => {
             this.setState({ message: error.response.data })
@@ -65,23 +65,23 @@ class Home extends React.Component {
     render() {
 
         return (
-                <div className="full-screen flex middle center">
-                    <div className="container col l4 m6 row center single-content flex middle">
-                        <div className="col s12">
-                            <Logo/>
-                            {this.state.message && (
-                                <FormMessage type="fail" text={this.state.message}/>
-                            )}
-                            {this.state.switch ? (
-                                <LoginForm onSubmit={this.login}/>
-                            ) : (
-                                <SignupForm onSubmit={this.signup}/>
-                            )}
-                            <DividerText text="or" classes="bold secondary"/>
-                            <Button label={this.state.switch ? 'Sign Up' : 'Log in'} onClick={this.toggle}/>
-                        </div>
+            <div className="full-screen flex middle center">
+                <div className="container col l4 m6 row center single-content flex middle">
+                    <div className="col s12">
+                        <Logo/>
+                        {this.state.message && (
+                            <FormMessage type="fail" text={this.state.message}/>
+                        )}
+                        {this.state.switch ? (
+                            <LoginForm onSubmit={this.login}/>
+                        ) : (
+                            <SignupForm onSubmit={this.signup}/>
+                        )}
+                        <DividerText text="or" classes="bold secondary"/>
+                        <Button label={this.state.switch ? 'Sign Up' : 'Log in'} onClick={this.toggle}/>
                     </div>
                 </div>
+            </div>
         )
     }
 }

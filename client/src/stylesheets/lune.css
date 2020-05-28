@@ -290,37 +290,37 @@ xl :	eXtra Large
 /* eXtra Small */
 @media only screen {
 	/* Sets the columns width in eXtra Small screens */
-	.xs1  { width: 8.33%;  }
-	.xs2  { width: 16.66%; }
-	.xs3  { width: 25%;    }
-	.xs4  { width: 33.33%; }
-	.xs5  { width: 41.66%; }
-	.xs6  { width: 50%;    }
-	.xs7  { width: 58.33%; }
-	.xs8  { width: 66.66%; }
-	.xs9  { width: 75%;    }
-	.xs10 { width: 83.33%; }
-	.xs11 { width: 91.66%; }
-	.xs12 { width: 100%;   }
+	.xs1  { width: 8.33% !important;  }
+	.xs2  { width: 16.66% !important; }
+	.xs3  { width: 25% !important;    }
+	.xs4  { width: 33.33% !important; }
+	.xs5  { width: 41.66% !important; }
+	.xs6  { width: 50% !important;    }
+	.xs7  { width: 58.33% !important; }
+	.xs8  { width: 66.66% !important; }
+	.xs9  { width: 75% !important;    }
+	.xs10 { width: 83.33% !important; }
+	.xs11 { width: 91.66% !important; }
+	.xs12 { width: 100% !important;   }
 
 	/* Sets the columns margin-left in eXtra Small screens */
-	.offset-xs1  { margin-left: 8.33%;  }
-	.offset-xs2  { margin-left: 16.66%; }
-	.offset-xs3  { margin-left: 25%;	}
-	.offset-xs4  { margin-left: 33.33%; }
-	.offset-xs5  { margin-left: 41.66%; }
-	.offset-xs6  { margin-left: 50%;	}
-	.offset-xs7  { margin-left: 58.33%; }
-	.offset-xs8  { margin-left: 66.66%; }
-	.offset-xs9  { margin-left: 75%;	}
-	.offset-xs10 { margin-left: 83.33%; }
-	.offset-xs11 { margin-left: 91.66%; }
-	.offset-xs12 { margin-left: 100%;	}
+	.offset-xs1  { margin-left: 8.33% !important;  }
+	.offset-xs2  { margin-left: 16.66% !important; }
+	.offset-xs3  { margin-left: 25% !important;	}
+	.offset-xs4  { margin-left: 33.33% !important; }
+	.offset-xs5  { margin-left: 41.66% !important; }
+	.offset-xs6  { margin-left: 50% !important;	}
+	.offset-xs7  { margin-left: 58.33% !important; }
+	.offset-xs8  { margin-left: 66.66% !important; }
+	.offset-xs9  { margin-left: 75% !important;	}
+	.offset-xs10 { margin-left: 83.33% !important; }
+	.offset-xs11 { margin-left: 91.66% !important; }
+	.offset-xs12 { margin-left: 100% !important;	}
 
 }
 
 /* Small */
-@media only screen and (min-width: 351px) {
+@media only screen {
 
 	/* Sets the columns width in Small screens */
 	.s1  { width: 8.33%;  }
@@ -451,6 +451,14 @@ xl :	eXtra Large
 
 }
 
+.h100 {
+	height: 100vh;
+}
+
+.w100 {
+	width: 100%;
+}
+
 
 /*
 This is a pack of layout classes
@@ -470,6 +478,10 @@ This is a pack of layout classes
 /* Display flex container */
 .flex {
 	display: flex;
+}
+
+.flex.flex-column {
+	flex-direction: column;
 }
 
 /* Left aligned content */
@@ -605,6 +617,11 @@ the screens sizes
 	text-decoration: none;
 }
 
+/* Shadow on */
+.shadow {
+	box-shadow: var(--shadow);
+}
+
 /* Rounded */
 .round {
 	border-radius: var(--round);
@@ -699,6 +716,16 @@ h4 { font-size: 20px; }
 
 /* Text utilities */
 
+.icon-message {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.icon-message i {
+	font-size: 5em;
+}
+
 /* Truncates overflow text */
 .truncate {
 	white-space: nowrap; 
@@ -742,6 +769,7 @@ h4 { font-size: 20px; }
 	min-height: 100vh;
 	background-color: var(--primary);
 	color: var(--highlight);
+	position: absolute;	
 }
 
 /* Container */
@@ -749,6 +777,15 @@ h4 { font-size: 20px; }
 	padding: 3%;
 	background-color: var(--secondary);
 	border-radius: var(--round);
+}
+
+/* Card */
+.card {
+	padding: 10px;
+}
+
+.flex.flex-column .card + .card {
+	margin-top: 20px;
 }
 
 /* Logo */
@@ -776,18 +813,25 @@ h4 { font-size: 20px; }
 	margin-top: 20px;
 }
 
+/* Content */
+.content {
+	min-height: calc(100vh - 55px);
+	padding-top: 20px;
+	position: relative;
+}
+
 /* Navbar */
 
 .navbar {
 	width: 100%;
 	height: 55px;
-	position: relative;
 	background-color: var(--primary);
 	box-shadow: var(--shadow);
 	color: var(--highlight);
 	display: flex;
 	align-items: center;
 	padding: 0 20px 0 20px;
+	z-index: var(--zi);
 }
 
 /* Navbar mobile */
@@ -803,11 +847,18 @@ h4 { font-size: 20px; }
 	display: flex !important;
 	justify-content: space-between;
 	padding: 0;
+
+}
+
+.navbar.sticky {
+	position: sticky;
+	top: 0;
 }
 
 /* Fixed Navbar */
 .navbar.fixed {
 	position: fixed !important;
+	margin-bottom: 40px;
 }
 
 /* Left-aligned content navbar */

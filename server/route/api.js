@@ -21,6 +21,7 @@ router.post('/api/auth/signin', Mounting.requiredToSignin, UserController.signin
 // User routes
 router.get('/api/user', UserController.list)
 router.get('/api/user/:id', Pattern.id, UserController.read)
+router.get('/api/user/:id/posts', Pattern.id, UserController.posts)
 router.put('/api/user/:id', Pattern.id, Auth.verifyToken, Auth.isOwner, Pattern.user, Integrity.reservedWords, Integrity.userUniqueness, UserController.update)
 router.delete('/api/user/:id', Pattern.id, Auth.verifyToken, Auth.isOwner, UserController.remove)
 

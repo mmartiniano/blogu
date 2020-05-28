@@ -9,18 +9,25 @@ const url = process.env.REACT_APP_API_URL + 'auth/'
 
 export default class AuthService {
     static signup(credentials) {
-        return axios.post(url + 'signup', credentials)
+        return axios
+            .post(url + 'signup', credentials)
+            .then(response => {
+                if (response.data.token)
+                    localStorage.setItem('user', JSON.stringify(response.data))
+
+                return response.data
+            })
     }
 
     static login(credentials) {
         return axios
-        .post(url + 'signin', credentials)
-        .then(response => {
-            if (response.data.token)
-                localStorage.setItem('user', JSON.stringify(response.data))
+            .post(url + 'signin', credentials)
+            .then(response => {
+                if (response.data.token)
+                    localStorage.setItem('user', JSON.stringify(response.data))
 
-            return response.data
-        })
+                return response.data
+            })
     }
 
     static logout() {

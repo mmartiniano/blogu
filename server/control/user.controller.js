@@ -91,7 +91,7 @@ function list(request, response) {
             return response.status(error.code).json([error.message])
 
         let users = documents.map( user => { return new UserDTO(user) })
-        response.status(200).json(users)
+        response.status(200).json(documents)
     })
 }
 
@@ -110,6 +110,24 @@ function read(request, response) {
             return response.status(error.code).json([error.message])
 
         response.status(200).json(new UserDTO(document))
+    })
+}
+
+/*
+* Read specific user posts.
+*
+* process GET requests at '/api/user/:id/posts'
+*
+* @return: user posts
+*/
+function posts(request, response) {
+    id = request.params.id
+
+    PostService.getByUserId(id, (error, posts) => {
+        if (error)
+            return response.status(error.code).json([error.message])
+
+        response.status(200).json(posts)
     })
 }
 
@@ -173,4 +191,4 @@ function generateToken(user) {
     return jwt.sign( {id: user._id}, process.env.SECRET, { expiresIn: '1d'})
 }
 
-module.exports = { signup, signin, list, read, update, remove }
+module.exports = { signup, signin, list, read, posts, update, remove }
