@@ -29,13 +29,13 @@ class Publish extends React.Component {
 
         PostService.create(post)
         .then( response => {
-            this.context.togglePublish()
+            this.context.togglePreloader()
+            this.context.setPublishing(false)
         })
         .catch( error => {
+            this.context.togglePreloader()
             this.setState({ message: error.response.data })
-        })
-
-        this.context.togglePreloader()
+        })     
     }
 
     edit = post => {
@@ -43,13 +43,13 @@ class Publish extends React.Component {
 
         PostService.update(post)
         .then( response => {
-            this.context.togglePublish()
+            this.context.togglePreloader()
+            this.context.setPublishing(false)
         })
         .catch( error => {
+            this.context.togglePreloader()
             this.setState({ message: error.response.data })
-        })
-
-        this.context.togglePreloader()
+        })  
     }
 
     render() {

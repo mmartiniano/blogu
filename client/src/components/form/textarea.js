@@ -31,15 +31,23 @@ export default class TextArea extends React.Component {
 
         this.textarea = React.createRef()
         this.design = this.props.design === "box" ? "input-box" : "input-field"
+
+        this.resize = this.resize.bind(this)
     }
 
     componentDidMount() {
-        const element = this.textarea.current
+        this.textarea.current.addEventListener('input', this.resize)
+        window.addEventListener('resize', this.resize)
+    }
 
-        element.addEventListener('input', () => {
-            element.style.height = 'auto'
-            element.style.height = element.scrollHeight + 'px'
-        })
+    componentWillUnmount() {
+        this.textarea.current.removeEventListener('input', this.resize)
+        window.removeEventListener('resize', this.resize)
+    }
+
+    resize = () => {
+        this.textarea.current.style.height = 'auto'
+        this.textarea.current.style.height = this.textarea.current.scrollHeight + 'px'
     }
 
     render () {

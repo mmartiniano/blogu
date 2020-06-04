@@ -1132,6 +1132,7 @@ input:-webkit-autofill, textarea:-webkit-autofill {
 	position: fixed;
 	top: 0;
 	left: 0;
+	z-index: 1000;
 	animation: preloader-indeterminate 1s linear infinite;
 }
 
