@@ -451,6 +451,10 @@ xl :	eXtra Large
 
 }
 
+.mt20 {
+	margin-top: 20px;
+}
+
 .h100 {
 	height: 100vh;
 }
@@ -820,6 +824,14 @@ h4 { font-size: 20px; }
 	position: relative;
 }
 
+@media only screen and (max-width: 767px) {
+	.content {
+		height: calc(100vh - 110px);
+		min-height: calc(100vh - 110px);
+		overflow-y: auto;
+	}
+}
+
 /* Navbar */
 
 .navbar {
@@ -931,6 +943,33 @@ ul.hover li:hover {
 	background-color: var(--hover) !important;
 }
 
+/* Toast */
+.toast {
+	position: fixed;
+	z-index: var(--zi);
+	padding: 10px;
+	bottom: 10px;
+	right: 10px;
+}
+
+@media only screen and (max-width: 767px) {
+	.toast {
+		bottom: 60px;
+	}
+}
+
+
+@keyframes toastit {
+	0% {
+		opacity: 0;
+	}
+	40% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
 
 /* Form */
 

@@ -17,7 +17,7 @@ export default class PostService {
         return axios.get(url + id)
     }
 
-    static publish(post) {
+    static create(post) {
         return axios.post(url, post, { headers : AuthService.header() })
     }
 

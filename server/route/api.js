@@ -28,8 +28,8 @@ router.delete('/api/user/:id', Pattern.id, Auth.verifyToken, Auth.isOwner, UserC
 // Post routes
 router.get('/api/post', PostController.list)
 router.get('/api/post/:id', Pattern.id, PostController.read)
-router.post('/api/post', Auth.verifyToken, Mounting.requiredToPublishPost, PostController.create)
-router.put('/api/post/:id', Pattern.id, Auth.verifyToken, Auth.isAuthor, Mounting.requiredToEditPost, PostController.update)
+router.post('/api/post', Auth.verifyToken, Mounting.requiredToPublish, PostController.create)
+router.put('/api/post/:id', Pattern.id, Auth.verifyToken, Auth.isAuthor, Mounting.requiredToPublish, PostController.update)
 router.delete('/api/post/:id', Pattern.id, Auth.verifyToken, Auth.isAuthor, PostController.remove)
 
 module.exports = router

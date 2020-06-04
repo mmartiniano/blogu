@@ -7,6 +7,7 @@ import './stylesheets/lune.css'
 
 import Navbar from './components/navigation/blogu_navbar'
 import Home from './pages/home'
+import Publish from './pages/publish'
 import Feed from './pages/feed'
 import Account from './pages/account'
 import Preloader from './components/general/preloader'
@@ -32,10 +33,17 @@ export default class App extends React.Component {
             })
         }
 
+        this.setPublishing = (value) => {
+            this.setState({
+                publishing: value
+            })
+        }
+
         this.state = {
             ...this.context,
             togglePreloader: this.togglePreloader,
-            toggleAuth: this.toggleAuth
+            toggleAuth: this.toggleAuth,
+            setPublishing: this.setPublishing
         }
         
     }
@@ -61,7 +69,11 @@ export default class App extends React.Component {
                             <React.Fragment>
                                 <Navbar/>
                                 <Switch>
-                                    <Route exact path='/' component={Feed}/>
+                                    {this.state.publishing ? (
+                                        <Route exact path='/' component={Publish}/>
+                                    ) : (
+                                        <Route exact path='/' component={Feed}/>
+                                    )}
                                     <Route path='/account' component={Account}/>
                                 </Switch>
                             </React.Fragment>

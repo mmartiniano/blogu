@@ -53,7 +53,8 @@ class Home extends React.Component {
 
         this.context.togglePreloader()
 
-        AuthService.signup(credentials).then( response => {
+        AuthService.signup(credentials)
+        .then( response => {
             window.location.reload()
         })
         .catch( error => {
