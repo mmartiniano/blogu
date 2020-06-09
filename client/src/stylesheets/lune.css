@@ -610,6 +610,11 @@ the screens sizes
 
 /* General utilities */
 
+.responsive-img {
+	width: 100%;
+	height: auto;
+}
+
 .full-screen {
 	min-height: 100vh;
 	min-width: 100%;
@@ -790,6 +795,32 @@ h4 { font-size: 20px; }
 
 .flex.flex-column .card + .card {
 	margin-top: 20px;
+}
+
+/* Profile picture */
+.profile-picture-wrapper {
+	overflow: hidden;
+	height: 50px;
+	width: 50px;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.profile-picture-wrapper.small {
+	height: 30px;
+	width: 30px;
+}
+
+.profile-picture-wrapper.large {
+	height: 80px;
+	width: 80px;
+}
+
+.profile-picture-wrapper .profile-picture {
+	object-fit: none;
+	object-position: center;
 }
 
 /* Logo */
@@ -1062,7 +1093,7 @@ input:-webkit-autofill, textarea:-webkit-autofill {
 /* Button */
 .input-field button {
 	margin-top: 5px;
-	height: 40px;
+	min-height: 40px;
 	width: 100%;
 	min-width: none;
 	font-family: inherit;

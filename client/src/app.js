@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom"
 
 import AuthService from './services/auth_service'
 
@@ -52,35 +52,33 @@ export default class App extends React.Component {
         const user = AuthService.user()
 
         if(user)
-            this.setState({ user: user })
+            this.setState({ user: user })    
     }
 
     render() {
         return (
-            <Router>
-                <Context.Provider value={this.state}>
-                    <div className="app">
-                        {this.state.preloader && (
-                            <Preloader/>
-                        )}
-                        {!this.state.user ? (
-                            <Home/>
-                        ) : (
-                            <React.Fragment>
-                                <Navbar/>
-                                <Switch>
-                                    {this.state.publishing ? (
-                                        <Route exact path='/' component={Publish}/>
-                                    ) : (
-                                        <Route exact path='/' component={Feed}/>
-                                    )}
-                                    <Route path='/account' component={Account}/>
-                                </Switch>
-                            </React.Fragment>
-                        )} 
-                    </div>
-                </Context.Provider>
-            </Router>
+            <Context.Provider value={this.state}>
+                <div className="app">
+                    {this.state.preloader && (
+                        <Preloader/>
+                    )}
+                    {!this.state.user ? (
+                        <Home/>
+                    ) : (
+                        <React.Fragment>
+                            <Navbar/>
+                            <Switch>
+                                {this.state.publishing ? (
+                                    <Route exact path='/' component={Publish}/>
+                                ) : (
+                                    <Route exact path='/' component={Feed}/>
+                                )}
+                                <Route path='/account' component={Account}/>
+                            </Switch>
+                        </React.Fragment>
+                    )} 
+                </div>
+            </Context.Provider>
         )
     }
 }

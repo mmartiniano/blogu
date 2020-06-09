@@ -29,6 +29,7 @@ const verifyToken = (request, response, next) => {
         request.userId = decoded.id
 
         next()
+        
     })
     
 }

@@ -3,6 +3,7 @@ import '../../stylesheets/lune.css'
 
 /* 
 * Form submit message component
+* TO DO change to just Message
 *
 * props
 *   - type: set message type

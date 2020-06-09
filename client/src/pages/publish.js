@@ -56,7 +56,7 @@ class Publish extends React.Component {
 
         return (
             <div className="content flex center">
-                <div className="col s10 m8 l6">
+                <div className="col s10 m8 l5">
                     {this.state.message && (
                         <FormMessage type="fail" text={this.state.message}/>
                     )}

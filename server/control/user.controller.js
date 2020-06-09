@@ -188,7 +188,7 @@ function remove(request, response) {
 
 // Access token
 function generateToken(user) {
-    return jwt.sign( {id: user._id}, process.env.SECRET, { expiresIn: '1d'})
+    return jwt.sign( {id: user._id}, process.env.SECRET)
 }
 
 module.exports = { signup, signin, list, read, posts, update, remove }

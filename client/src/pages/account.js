@@ -5,6 +5,7 @@ import Button from '../components/form/button'
 import IconMessage from '../components/general/icon_message'
 
 import AuthService from '../services/auth_service'
+import UserService from '../services/user_service'
 import { Context } from '../context'
 
 /*
@@ -23,13 +24,13 @@ class Account extends React.Component {
 
         this.state = {
             message: '',
-            switch: true,
+            editing: true,
             user: undefined
         }
     }
 
     toggle = () => {
-        this.setState({ switch: !this.state.switch, message: '' })
+        this.setState({ editing: !this.state.editing, message: '' })
     }
 
     
@@ -43,7 +44,25 @@ class Account extends React.Component {
         this.context.togglePreloader()
 
         this.props.history.push("/")
-        window.location.reload()
+        window.location.reload()             
+    }
+
+    delete = () => {
+        this.context.togglePreloader()
+
+        UserService.delete()
+
+        .then( () => {
+            AuthService.logout()
+            this.context.toggleAuth()
+            this.context.togglePreloader()
+            this.props.history.push("/")
+            window.location.reload()
+        })
+        .catch( (error) => {
+            this.setState({ message : error.response.data })
+        })
+        this.context.togglePreloader()   
     }
 
     componentDidMount() {
@@ -58,9 +77,27 @@ class Account extends React.Component {
         return (
             <React.Fragment>
                 {this.state.user ? (
-                    <div className="content flex flex-column middle">
+                    <div className="content flex flex-column middle center">
+                        {this.state.message && (
+                            <FormMessage type="fail" text={this.state.message}/>
+                        )}
+                        <div className="profile-picture-wrapper large">
+                            {this.state.user.profile ? (
+                                <img alt="" src={process.env.PUBLIC_URL + 'profile/BU-1.png'} />
+                            ) : (
+                                <i className="material-icons large">person</i>
+                            )}
+                            
+                        </div>
+                        <br/>
                         <div>{this.state.user.name}</div>
-                        <Button onClick={this.logout} label="Log out"/>
+                        <div>@{this.state.user.username}</div>
+                        <div className="col s10 m8 l4">
+                            <Button onClick={this.logout} label="Log out"/>
+                            <Button onClick={this.logout} label="Edit personal data"/>
+                            <Button onClick={this.logout} label="Change password"/>
+                            <Button onClick={this.delete} label="Delete Account"/>
+                        </div>
                     </div>
                 ) : (
                     <div className="content flex middle center">

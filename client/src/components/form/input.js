@@ -22,24 +22,45 @@ import '../../stylesheets/lune.css'
 *       default: false
 *
 *   - onChange
-*       values: callback function that accepts 1 value (input current value)
+*       values: callback function that accepts onChange event
 *
 *   TO DO: validation
 */
 
-export default function Input(props) {
+export default class Input extends React.Component {
 
-    const design = props.design === "box" ? "input-box" : "input-field"
+    constructor(props) {
+        super(props)
 
-    return (
-        <div className={design}>
-            <input 
-                name={props.name}
-                placeholder={props.label}
-                type={props.type}
-                required={props.required}
-                onChange={props.onChange}
-            />
-        </div>
-    )
+        this.state = {
+            value: this.props.value ? this.props.value : ''
+        }
+    }
+
+    changeHandler = event => {
+        this.setState({
+            value: event.target.value
+        })
+
+        if (! this.props.onChange)
+            return
+        
+        this.props.onChange(event)
+    }
+
+    render() {
+        return (
+            <div className={this.props.design === "box" ? "input-box" : "input-field"}>
+                <input 
+                    name={this.props.name}
+                    placeholder={this.props.label}
+                    type={this.props.type}
+                    required={this.props.required}
+                    onChange={this.changeHandler}
+                    value={this.state.value}
+                />
+            </div>
+        )
+    }
+    
 }

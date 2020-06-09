@@ -17,6 +17,7 @@ const router = express.Router()
 // Authenctication routes
 router.post('/api/auth/signup', Mounting.requiredToRegisterUser, Pattern.user, Integrity.reservedWords, Integrity.userUniqueness, UserController.signup)
 router.post('/api/auth/signin', Mounting.requiredToSignin, UserController.signin)
+router.get('/api/auth/session', Auth.verifyToken, Auth.OK)
 
 // User routes
 router.get('/api/user', UserController.list)

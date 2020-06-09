@@ -34,6 +34,10 @@ export default class AuthService {
         localStorage.removeItem('user')
     }
 
+    static session() {
+        return axios.get(url + 'session', { headers: AuthService.header()})
+    }
+
     // Current authenticated user
     static user() {
         return localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : undefined

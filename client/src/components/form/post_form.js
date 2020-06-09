@@ -15,7 +15,7 @@ const PostForm = props => {
             return
 
         if (props.post)
-            return props.onSubmit({ ...props.post, ...data})
+            return props.onSubmit(data)
         
         props.onSubmit(data)
     }
