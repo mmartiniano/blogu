@@ -44,7 +44,7 @@ class Home extends React.Component {
             window.location.reload()
         })
         .catch( error => {
-            this.setState({ message: error.response.data })
+            this.setState({ message: error.response ? error.response.data : 'Failed to connect' })
         })
         .then( this.context.togglePreloader )
     }

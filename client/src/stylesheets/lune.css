@@ -811,16 +811,22 @@ h4 { font-size: 20px; }
 .profile-picture-wrapper.small {
 	height: 30px;
 	width: 30px;
+	font-size: 30px;
 }
 
 .profile-picture-wrapper.large {
 	height: 80px;
 	width: 80px;
+	font-size: 80px;
 }
 
 .profile-picture-wrapper .profile-picture {
 	object-fit: none;
 	object-position: center;
+}
+
+.profile-picture-wrapper i {
+	font-size: inherit;
 }
 
 /* Logo */
@@ -972,6 +978,73 @@ h4 { font-size: 20px; }
 /* li hoverable */
 ul.hover li:hover {
 	background-color: var(--hover) !important;
+}
+
+/* Modal */
+
+.modal-wrapper {
+	background-color: rgba(0, 0, 0, 0);
+	position: fixed;
+	height: 100vh;
+	width: 100%;
+	top: 0;
+	z-index: 999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	animation: show-modal-wrapper var(--fast) forwards;
+}
+
+@keyframes show-modal-wrapper {
+	to {
+		background-color: rgba(0, 0, 0, 0.3);
+	}
+}
+
+@keyframes hide-modal-wrapper {
+	from	 {
+		background-color: rgba(0, 0, 0, 0.3);
+	}
+	to {
+		background-color: rgba(0, 0, 0, 0);
+	}
+}
+
+/* Unactive modal */
+.modal {
+	transform: scale(0.85, 0.85);
+	background-color: var(--secondary);
+	box-shadow: var(--shadow);
+	border-radius: var(--round);
+	overflow-y: auto;
+	margin-top: 10%;
+	height: 40vh;
+	width: 40%;
+	animation: show-modal var(--fast) forwards;
+	opacity: 0;
+}
+
+/* Active modal */
+@keyframes show-modal {
+	to {
+		transform: scale(1, 1);
+		margin-top: 0;
+		opacity: 1;
+	}
+}
+
+/* Dismiss modal */
+@keyframes hide-modal {
+	from {
+		transform: scale(1, 1);
+		margin-top: 0;
+		opacity: 1;
+	}
+	to {
+		transform: scale(0.85, 0.85);
+		margin-top: 10%;
+		opacity: 0;
+	}
 }
 
 /* Toast */

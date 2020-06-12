@@ -48,7 +48,7 @@ class Publish extends React.Component {
         })
         .catch( error => {
             this.context.togglePreloader()
-            this.setState({ message: error.response.data })
+            this.setState({ message: error.response ? error.response.data : 'Failed to connect' })
         })  
     }
 

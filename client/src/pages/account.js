@@ -3,6 +3,7 @@ import '../stylesheets/lune.css'
 import FormMessage from '../components/form/form_message'
 import Button from '../components/form/button'
 import IconMessage from '../components/general/icon_message'
+import Modal from '../components/general/modal'
 
 import AuthService from '../services/auth_service'
 import UserService from '../services/user_service'
@@ -24,15 +25,28 @@ class Account extends React.Component {
 
         this.state = {
             message: '',
-            editing: true,
+            editing: false,
+            changingPassword: false,
+            deleting: false,
             user: undefined
         }
     }
 
-    toggle = () => {
+    toggleEditing = () => {
         this.setState({ editing: !this.state.editing, message: '' })
     }
 
+    showChangePassword = () => {
+        this.setState({ changingPassword: true })
+    }
+
+    handleCancelChangePassword = () => {
+        this.setState({ changingPassword: false })
+    }
+
+    handleOKChangePassword = () => {
+        this.setState({ changingPassword: false })
+    }
     
     logout = () => {
         this.context.togglePreloader()
@@ -60,10 +74,11 @@ class Account extends React.Component {
             window.location.reload()
         })
         .catch( (error) => {
-            this.setState({ message : error.response.data })
+            this.setState({ message: error.response ? error.response.data : 'Failed to connect' })
         })
         this.context.togglePreloader()   
     }
+    
 
     componentDidMount() {
         this.setState({
@@ -77,28 +92,29 @@ class Account extends React.Component {
         return (
             <React.Fragment>
                 {this.state.user ? (
-                    <div className="content flex flex-column middle center">
-                        {this.state.message && (
-                            <FormMessage type="fail" text={this.state.message}/>
-                        )}
-                        <div className="profile-picture-wrapper large">
-                            {this.state.user.profile ? (
-                                <img alt="" src={process.env.PUBLIC_URL + 'profile/BU-1.png'} />
-                            ) : (
-                                <i className="material-icons large">person</i>
+                    <React.Fragment>
+                        <div className="content flex flex-column middle center">
+                            {this.state.message && (
+                                <FormMessage type="fail" text={this.state.message}/>
                             )}
-                            
+                            <div className="profile-picture-wrapper large">
+                                {this.state.user.profile ? (
+                                    <img alt="" src={process.env.PUBLIC_URL + 'profile/BU-1.png'} />
+                                ) : (
+                                    <i className="material-icons">account_circle</i>
+                                )}
+                            </div>
+                            <div>{this.state.user.name}</div>
+                            <div>@{this.state.user.username}</div>
+                            <div className="col s10 m8 l4">
+                                <Button onClick={this.logout} label="Log out"/>
+                                <Button onClick={this.logout} label="Edit personal data"/>
+                                <Button onClick={this.showChangePassword} label="Change password"/>
+                                <Button onClick={this.delete} label="Delete Account"/>
+                            </div>
                         </div>
-                        <br/>
-                        <div>{this.state.user.name}</div>
-                        <div>@{this.state.user.username}</div>
-                        <div className="col s10 m8 l4">
-                            <Button onClick={this.logout} label="Log out"/>
-                            <Button onClick={this.logout} label="Edit personal data"/>
-                            <Button onClick={this.logout} label="Change password"/>
-                            <Button onClick={this.delete} label="Delete Account"/>
-                        </div>
-                    </div>
+                        <Modal style={{height: '40vh', width: '80%'}} visible={this.state.changingPassword} onOK={this.handleOKChangePassword} onCancel={this.handleCancelChangePassword} text="You must reauthenticate in order to proceed"/>
+                    </React.Fragment>
                 ) : (
                     <div className="content flex middle center">
                         {this.state.message && (
