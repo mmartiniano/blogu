@@ -23,8 +23,7 @@ let PostSchema = new mongoose.Schema({
 
     title: {
         type: String,
-        required: true,
-        maxlength: 255
+        required: true
     },
 
     created_at: {

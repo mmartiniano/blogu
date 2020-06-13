@@ -283,7 +283,6 @@ xl :	eXtra Large
 /* Represents a grid column */
 .col {
   float: left;
-  padding: 0.75rem;
   min-height: 1px;
 }
 
@@ -1018,10 +1017,10 @@ ul.hover li:hover {
 	border-radius: var(--round);
 	overflow-y: auto;
 	margin-top: 10%;
-	height: 40vh;
-	width: 40%;
+	height: 50vh;
 	animation: show-modal var(--fast) forwards;
 	opacity: 0;
+	padding: 10px;
 }
 
 /* Active modal */
@@ -1045,6 +1044,18 @@ ul.hover li:hover {
 		margin-top: 10%;
 		opacity: 0;
 	}
+}
+
+.modal-content {
+	height: calc(100% - 60px);
+	overflow-y: auto;
+}
+
+.modal-actions {
+	margin-top: 20px;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
 }
 
 /* Toast */
@@ -1096,9 +1107,14 @@ ul.hover li:hover {
 	margin-top: 30px;
 }
 
+/* Removes margin to inline sequencial fields */
+[class*="input-"].inline + [class*="input-"].inline {
+	margin-top: 0;
+}
+
 /* Inputs */
 .input-field input, .input-box input, .input-field textarea, .input-box textarea {
-	height: 35px;
+	height: 40px;
 	font-family: inherit;
 	outline: none;
 	box-shadow: none !important;
@@ -1165,7 +1181,6 @@ input:-webkit-autofill, textarea:-webkit-autofill {
 
 /* Button */
 .input-field button {
-	margin-top: 5px;
 	min-height: 40px;
 	width: 100%;
 	min-width: none;
@@ -1178,6 +1193,7 @@ input:-webkit-autofill, textarea:-webkit-autofill {
 	background-color: transparent;
 	font-weight: bold !important;
 	cursor: pointer;
+	overflow: hidden;
 }
 
 /* Button focus */

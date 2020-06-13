@@ -17,21 +17,18 @@ let UserSchema = new mongoose.Schema({
 
     name: {
         type: String,
-        required: true,
-        maxlength: 255
+        required: true
     },
 
     username: {
         type: String,
         required: true,
-        unique: true,
-        maxlength: 255
+        unique: true
     },
 
     password: {
         type: String,
-        required: true,
-        maxlength: 16
+        required: true
     },
 
     member_since: {

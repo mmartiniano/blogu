@@ -58,7 +58,7 @@ class Home extends React.Component {
             window.location.reload()
         })
         .catch( error => {
-            this.setState({ message: error.response.data })
+            this.setState({ message: error.response ? error.response.data : 'Failed to connect' })
         })
         .then( this.context.togglePreloader )
     }
@@ -79,7 +79,7 @@ class Home extends React.Component {
                             <SignupForm onSubmit={this.signup}/>
                         )}
                         <DividerText text="or" classes="bold secondary"/>
-                        <Button label={this.state.switch ? 'Sign Up' : 'Log in'} onClick={this.toggle}/>
+                        <Button label={this.state.switch ? 'Sign up' : 'Log in'} onClick={this.toggle}/>
                     </div>
                 </div>
             </div>

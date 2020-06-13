@@ -10,11 +10,7 @@ const UserDTO = require('../model/user_dto') // User data transfer object
 const User = require('../model/user') // User model
 const UserService = require('../service/user.service') // User service
 const PostService = require('../service/post.service') // Post service
-const UserError = require('../error/user.error') // User Error
-const PostError = require('../error/post.error') // Post Error
 const AuthenticationError = require('../error/authentication.error') // Authentication Error
-const NotFoundError = require('../error/not_found.error') // Not Found Error
-const EntityMountError = require('../error/entity_mount.error') // Entity Mount Error
 
 // User authentication control
 
@@ -91,7 +87,7 @@ function list(request, response) {
             return response.status(error.code).json([error.message])
 
         let users = documents.map( user => { return new UserDTO(user) })
-        response.status(200).json(documents)
+        response.status(200).json(users)
     })
 }
 
@@ -135,16 +131,16 @@ function posts(request, response) {
 * Update user
 *
 * process PUT requests at '/api/user/:id'
+* edit user personal data
 *
 * @return: user info updated as json
 */
-async function update(request, response) {
+function update(request, response) {
 
     let user = new User({
         _id: request.params.id,
         name: request.body.name,
         username: request.body.username,
-        password: request.body.password,
         avatar: request.body.avatar,
     })
     
@@ -156,6 +152,34 @@ async function update(request, response) {
         response.status(200).json(new UserDTO(updatedUser))
     })
 
+}
+
+/*
+* Update password
+*
+* process PUT requests at '/api/user/:id/password'
+*
+* @return: HTTP 200 OK or Error
+*/
+function updatePassword(request, response) {
+
+    const id = request.params.id
+    const { oldPassword, newPassword } = request.body
+
+    UserService.getById(id, (error, user) => {
+        if (user && (user.password == oldPassword)) {
+            user.password = newPassword
+
+            UserService.update(user, (error, updatedUser) => {
+                if (error)
+                    return response.status(error.code).json([error.message])
+    
+                return response.status(200).send(new UserDTO(updatedUser))
+            })
+        }
+        else
+            response.status(AuthenticationError.CODE).json([AuthenticationError.MESSAGE])
+    })
 }
 
 /*
@@ -191,4 +215,4 @@ function generateToken(user) {
     return jwt.sign( {id: user._id}, process.env.SECRET)
 }
 
-module.exports = { signup, signin, list, read, posts, update, remove }
+module.exports = { signup, signin, list, read, posts, update, updatePassword,remove }

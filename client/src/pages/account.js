@@ -1,6 +1,8 @@
 import React from 'react'
 import '../stylesheets/lune.css'
 import FormMessage from '../components/form/form_message'
+import PersonalDataForm from '../components/form/personal_data_form'
+import PasswordForm from '../components/form/password_form'
 import Button from '../components/form/button'
 import IconMessage from '../components/general/icon_message'
 import Modal from '../components/general/modal'
@@ -36,16 +38,22 @@ class Account extends React.Component {
         this.setState({ editing: !this.state.editing, message: '' })
     }
 
-    showChangePassword = () => {
-        this.setState({ changingPassword: true })
+    toggleChangingPassword = () => {
+        this.toggleEditing()
+        this.setState({ changingPassword: !this.state.changingPassword })
     }
 
-    handleCancelChangePassword = () => {
-        this.setState({ changingPassword: false })
+    showDelete = () => {
+        this.setState({ deleting: true })
     }
 
-    handleOKChangePassword = () => {
-        this.setState({ changingPassword: false })
+    handleCancelDelete = () => {
+        this.setState({ deleting: false })
+    }
+
+    handleOKDelete = () => {
+        this.setState({ deleting: false })
+        this.delete()
     }
     
     logout = () => {
@@ -53,12 +61,40 @@ class Account extends React.Component {
 
         AuthService.logout()
 
-        this.context.toggleAuth()
+        this.context.resetUser()
 
         this.context.togglePreloader()
 
         this.props.history.push("/")
         window.location.reload()             
+    }
+
+    update = data => {
+
+        this.context.togglePreloader()
+
+        UserService.update(data)
+        .then( response => {
+            window.location.reload()
+        })
+        .catch( error => {
+            this.setState({ message: error.response ? error.response.data : 'Failed to connect' })
+        })
+        .then( this.context.togglePreloader )
+    }
+
+    updatePassword = data => {
+
+        this.context.togglePreloader()
+
+        UserService.updatePassword(data)
+        .then( response => {
+            window.location.reload()
+        })
+        .catch( error => {
+            this.setState({ message: error.response ? error.response.data : 'Failed to connect' })
+        })
+        .then( this.context.togglePreloader )
     }
 
     delete = () => {
@@ -68,7 +104,7 @@ class Account extends React.Component {
 
         .then( () => {
             AuthService.logout()
-            this.context.toggleAuth()
+            this.context.resetUser()
             this.context.togglePreloader()
             this.props.history.push("/")
             window.location.reload()
@@ -77,8 +113,7 @@ class Account extends React.Component {
             this.setState({ message: error.response ? error.response.data : 'Failed to connect' })
         })
         this.context.togglePreloader()   
-    }
-    
+    }    
 
     componentDidMount() {
         this.setState({
@@ -97,23 +132,37 @@ class Account extends React.Component {
                             {this.state.message && (
                                 <FormMessage type="fail" text={this.state.message}/>
                             )}
-                            <div className="profile-picture-wrapper large">
-                                {this.state.user.profile ? (
-                                    <img alt="" src={process.env.PUBLIC_URL + 'profile/BU-1.png'} />
-                                ) : (
-                                    <i className="material-icons">account_circle</i>
-                                )}
-                            </div>
-                            <div>{this.state.user.name}</div>
-                            <div>@{this.state.user.username}</div>
-                            <div className="col s10 m8 l4">
-                                <Button onClick={this.logout} label="Log out"/>
-                                <Button onClick={this.logout} label="Edit personal data"/>
-                                <Button onClick={this.showChangePassword} label="Change password"/>
-                                <Button onClick={this.delete} label="Delete Account"/>
-                            </div>
+                            {this.state.editing ? (
+                                <div className="col s10 m8 l4">
+                                    {this.state.changingPassword ? (
+                                        <PasswordForm onSubmit={this.updatePassword} onCancel={this.toggleChangingPassword}/>
+                                    ) : (
+                                        <PersonalDataForm user={this.state.user} onSubmit={this.update} onCancel={this.toggleEditing}/>
+                                    )}
+                                </div>
+                            ) : (
+                                <React.Fragment>
+                                    <div className="profile-picture-wrapper large">
+                                        {this.state.user.avatar ? (
+                                            <img alt="" src={process.env.PUBLIC_URL + 'profile/BU-1.png'} />
+                                        ) : (
+                                            <i className="material-icons">account_circle</i>
+                                        )}
+                                    </div>
+                                    <div>{this.state.user.name}</div>
+                                    <div>@{this.state.user.username}</div>
+                                    <div className="col s10 m8 l4">
+                                        <Button onClick={this.logout} label="Log out"/>
+                                        <Button onClick={this.toggleEditing} label="Edit personal data"/>
+                                        <Button onClick={this.toggleChangingPassword} label="Change password"/>
+                                        <Button onClick={this.showDelete} label="Delete Account"/>
+                                    </div>
+                                    <Modal style={{height: '170px', textAlign: 'center'}} visible={this.state.deleting} onOK={this.handleOKDelete} onCancel={this.handleCancelDelete}>
+                                        Are you sure you want to delete your Blogu account?
+                                    </Modal>
+                                </React.Fragment>
+                            )}
                         </div>
-                        <Modal style={{height: '40vh', width: '80%'}} visible={this.state.changingPassword} onOK={this.handleOKChangePassword} onCancel={this.handleCancelChangePassword} text="You must reauthenticate in order to proceed"/>
                     </React.Fragment>
                 ) : (
                     <div className="content flex middle center">

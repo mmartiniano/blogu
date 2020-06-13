@@ -48,12 +48,10 @@ const usernameUniqueness = (username, currentUserId) => {
 
             // If username is not free to use
             if (user) {
-    
                 // If user is an already registred user
                 if (currentUserId) {
-    
                     // If who is using username is not the current user
-                    if (currentUserId != user._id.toString()) {}
+                    if (currentUserId != user._id.toString())
                         resolve(false)
                 }
                 else 

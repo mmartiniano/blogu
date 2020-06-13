@@ -27,7 +27,7 @@ export default class App extends React.Component {
             })
         }
 
-        this.toggleAuth = () => {
+        this.resetUser = () => {
             this.setState({
                 user: AuthService.user()
             })
@@ -42,7 +42,7 @@ export default class App extends React.Component {
         this.state = {
             ...this.context,
             togglePreloader: this.togglePreloader,
-            toggleAuth: this.toggleAuth,
+            resetUser: this.resetUser,
             setPublishing: this.setPublishing
         }
         

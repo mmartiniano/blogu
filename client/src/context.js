@@ -4,7 +4,7 @@ export const Context = React.createContext({
     preloader: false,
     togglePreloader: () => {},
     user: undefined,
-    toggleAuth: () => {},
+    resetUser: () => {},
     publishing: false,
     setPublishing: () => {}
 })

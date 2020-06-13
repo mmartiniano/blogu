@@ -15,7 +15,7 @@ const PostController = require('../control/post.controller') // Post controller
 const router = express.Router()
 
 // Authenctication routes
-router.post('/api/auth/signup', Mounting.requiredToRegisterUser, Pattern.user, Integrity.reservedWords, Integrity.userUniqueness, UserController.signup)
+router.post('/api/auth/signup', Mounting.requiredToSignup, Pattern.user, Integrity.reservedWords, Integrity.userUniqueness, UserController.signup)
 router.post('/api/auth/signin', Mounting.requiredToSignin, UserController.signin)
 router.get('/api/auth/session', Auth.verifyToken, Auth.OK)
 
@@ -23,7 +23,8 @@ router.get('/api/auth/session', Auth.verifyToken, Auth.OK)
 router.get('/api/user', UserController.list)
 router.get('/api/user/:id', Pattern.id, UserController.read)
 router.get('/api/user/:id/posts', Pattern.id, UserController.posts)
-router.put('/api/user/:id', Pattern.id, Auth.verifyToken, Auth.isOwner, Pattern.user, Integrity.reservedWords, Integrity.userUniqueness, UserController.update)
+router.put('/api/user/:id', Pattern.id, Auth.verifyToken, Auth.isOwner, Mounting.requiredToUpdatePersonalData, Pattern.user, Integrity.reservedWords, Integrity.userUniqueness, UserController.update)
+router.put('/api/user/:id/password', Pattern.id, Auth.verifyToken, Auth.isOwner, Mounting.requiredToUpdatePassword, UserController.updatePassword)
 router.delete('/api/user/:id', Pattern.id, Auth.verifyToken, Auth.isOwner, UserController.remove)
 
 // Post routes

@@ -19,6 +19,15 @@ export default class UserService {
 
     static update(data) {
         return axios.put(url + AuthService.user().id, data, { headers : AuthService.header() })
+        .then( response => {
+            const user = response.data
+            user.token = AuthService.user().token
+            localStorage.setItem('user', JSON.stringify(user))
+        })
+    }
+
+    static updatePassword(data) {
+        return axios.put(url + AuthService.user().id + '/password', data, { headers : AuthService.header() })
     }
 
     static delete() {
