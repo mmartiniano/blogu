@@ -1,6 +1,7 @@
 import React from 'react'
 import '../stylesheets/lune.css'
 import FormMessage from '../components/form/form_message'
+import ProfilePicturePicker from '../components/general/profile_picture_picker'
 import PersonalDataForm from '../components/form/personal_data_form'
 import PasswordForm from '../components/form/password_form'
 import Button from '../components/form/button'
@@ -28,6 +29,7 @@ class Account extends React.Component {
         this.state = {
             message: '',
             editing: false,
+            pickingProfilePicture: false,
             changingPassword: false,
             deleting: false,
             user: undefined
@@ -41,6 +43,21 @@ class Account extends React.Component {
     toggleChangingPassword = () => {
         this.toggleEditing()
         this.setState({ changingPassword: !this.state.changingPassword })
+    }
+
+    showProfilePicturePicker = () => {
+        this.setState({ pickingProfilePicture: true })
+    }
+
+    handlePick = picture => {
+        const user = this.state.user
+        user.avatar = picture
+        this.setState({ pickingProfilePicture: false })
+        this.update(user)
+    }
+
+    handleCancelPick = () => {
+        this.setState({ pickingProfilePicture: false })
     }
 
     showDelete = () => {
@@ -142,16 +159,17 @@ class Account extends React.Component {
                                 </div>
                             ) : (
                                 <React.Fragment>
-                                    <div className="profile-picture-wrapper large">
-                                        {this.state.user.avatar ? (
-                                            <img alt="" src={process.env.PUBLIC_URL + 'profile/BU-1.png'} />
+                                    <div className="profile-picture-wrapper large profile-picture-picker" onClick={this.showProfilePicturePicker}>
+                                        {(this.state.user && this.state.user.avatar) ? (
+                                            <img className="profile-picture" alt="" src={process.env.PUBLIC_URL + 'profile/' + this.state.user.avatar}/>
                                         ) : (
-                                            <i className="material-icons">account_circle</i>
+                                            <i className="profile-picture material-icons primary-text">person</i>
                                         )}
                                     </div>
-                                    <div>{this.state.user.name}</div>
+                                    <ProfilePicturePicker visible={this.state.pickingProfilePicture} onPick={this.handlePick} onCancel={this.handleCancelPick}/>
+                                    <div className="mt10">{this.state.user.name}</div>
                                     <div>@{this.state.user.username}</div>
-                                    <div className="col s10 m8 l4">
+                                    <div className="col s10 m8 l4 mt20">
                                         <Button onClick={this.logout} label="Log out"/>
                                         <Button onClick={this.toggleEditing} label="Edit personal data"/>
                                         <Button onClick={this.toggleChangingPassword} label="Change password"/>

@@ -447,11 +447,18 @@ xl :	eXtra Large
 	.offset-xl10 { margin-left: 83.33% !important; }
 	.offset-xl11 { margin-left: 91.66% !important; }
 	.offset-xl12 { margin-left: 100% !important;   }
+}
 
+.mt10 {
+	margin-top: 10px;
 }
 
 .mt20 {
 	margin-top: 20px;
+}
+
+.mt30 {
+	margin-top: 30px;
 }
 
 .h100 {
@@ -801,7 +808,8 @@ h4 { font-size: 20px; }
 	overflow: hidden;
 	height: 50px;
 	width: 50px;
-	border-radius: 50%;
+	background-color: var(--highlight);
+	border-radius: var(--round);
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -820,12 +828,37 @@ h4 { font-size: 20px; }
 }
 
 .profile-picture-wrapper .profile-picture {
-	object-fit: none;
-	object-position: center;
+	width: 100%;
+	height: auto;
 }
 
 .profile-picture-wrapper i {
 	font-size: inherit;
+}
+
+.profile-picture-picker {
+	cursor: pointer;
+}
+
+.profile-picture-picker-list {
+	display: flex;
+}
+
+.profile-picture-picker-item {
+	background-color: var(--highlight);
+	border-radius: var(--round);
+	height: 50px;
+	width: 50px;
+	font-size: 50px;
+	cursor: pointer;
+}
+
+.profile-picture-picker-item + .profile-picture-picker-item {
+	margin-left: 5px;
+}
+
+.profile-picture-picker-item.selected {
+	opacity: 0.8;
 }
 
 /* Logo */
