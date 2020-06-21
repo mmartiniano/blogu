@@ -59,7 +59,7 @@ function create(request, response) {
     let post = new Post({
         author: request.userId,
         title: request.body.title,
-        created_at: Date.now(),
+        created_at: new Date(),
         text: request.body.text
     })        
     
@@ -86,7 +86,7 @@ function update(request, response) {
         _id: request.params.id,
         author: request.userId,
         title: request.body.title,
-        updated_at: Date.now(),
+        updated_at: new Date(),
         text: request.body.text
     })        
     

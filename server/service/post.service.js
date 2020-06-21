@@ -37,7 +37,7 @@ module.exports = {
     * @param: callback: function to recieve post found or error
     */
     getById(id, callback) {
-        Post.findById(id).populate('author', 'name username').exec( (error, document) => {
+        Post.findById(id).populate('author', 'name username avatar').exec( (error, document) => {
             if (error)
                 callback(new PostError(PostError.GET), null)
             else if (document)
@@ -72,7 +72,7 @@ module.exports = {
     * @param: callback: function to recieve post list or error
     */
     list(callback) {
-        Post.find({}).populate('author', 'name username').exec( (error, documents) => {
+        Post.find({}).populate('author', 'name username avatar').exec( (error, documents) => {
             if (error)
                 callback(new PostError(PostError.LIST), null)
             else 

@@ -36,17 +36,17 @@ class Home extends React.Component {
     }
 
     login = (credentials) => {
-
         this.context.togglePreloader()
 
         AuthService.login(credentials)
         .then( response => {
-            window.location.reload()
+            this.context.togglePreloader(false)
+            this.context.resetUser()
         })
         .catch( error => {
             this.setState({ message: error.response ? error.response.data : 'Failed to connect' })
+            this.context.togglePreloader(false)
         })
-        .then( this.context.togglePreloader )
     }
     
     signup = (credentials) => {
@@ -55,12 +55,13 @@ class Home extends React.Component {
 
         AuthService.signup(credentials)
         .then( response => {
-            window.location.reload()
+            this.context.togglePreloader(false)
+            this.context.resetUser()
         })
         .catch( error => {
             this.setState({ message: error.response ? error.response.data : 'Failed to connect' })
+            this.context.togglePreloader(false)
         })
-        .then( this.context.togglePreloader )
     }
 
     render() {

@@ -1,5 +1,5 @@
 import React from 'react'
-import Modal from './modal'
+import Modal from '../general/modal'
 
 const PROFILE_PICTURES = [
     'BU-1.png',
@@ -37,7 +37,7 @@ export default class ProfilePicturePicker extends React.Component {
     render() {
         return (
             <Modal visible={this.props.visible} onOK={() => { this.props.onPick(this.state.picture) }} onCancel={this.props.onCancel}>
-                <div className="profile-picture-picker-list">
+                <div className="profile-picture-picker">
                     <div className="profile-picture-wrapper profile-picture-picker-item primary-text" onClick={event => this.select(event, null)}>
                         <i className="profile-picture material-icons">clear</i>
                     </div>

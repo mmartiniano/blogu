@@ -10,7 +10,9 @@ import Home from './pages/home'
 import Publish from './pages/publish'
 import Feed from './pages/feed'
 import Account from './pages/account'
+import Post from './pages/post'
 import Preloader from './components/general/preloader'
+import Toast from './components/general/toast'
 import { Context } from './context'
 
 export default class App extends React.Component {
@@ -21,10 +23,11 @@ export default class App extends React.Component {
         super(props)
         this.context = context
 
-        this.togglePreloader = () => {     
-            this.setState({
-                preloader: !this.state.preloader
-            })
+        this.togglePreloader = setTo => {
+            if (setTo != null)
+                this.setState({ preloader: setTo })
+            else
+                this.setState({ preloader: !this.state.preloader })
         }
 
         this.resetUser = () => {
@@ -39,20 +42,29 @@ export default class App extends React.Component {
             })
         }
 
+        this.toastIt = (text) => {
+            this.setState({
+                toast: true,
+                toastMessage: text
+            })
+        }
+
+        this.handleToastFadeOut = () => {
+            this.setState({
+                toast: false,
+                toastMessage: ''
+            })
+        }
+
         this.state = {
             ...this.context,
+            user: AuthService.user(),
             togglePreloader: this.togglePreloader,
             resetUser: this.resetUser,
-            setPublishing: this.setPublishing
+            setPublishing: this.setPublishing,
+            toastIt: this.toastIt
         }
         
-    }
-
-    componentDidMount() {
-        const user = AuthService.user()
-
-        if(user)
-            this.setState({ user: user })    
     }
 
     render() {
@@ -62,6 +74,7 @@ export default class App extends React.Component {
                     {this.state.preloader && (
                         <Preloader/>
                     )}
+                    <Toast visible={this.state.toast} text={this.state.toastMessage} onFadeOut={this.handleToastFadeOut}/>
                     {!this.state.user ? (
                         <Home/>
                     ) : (
@@ -73,6 +86,7 @@ export default class App extends React.Component {
                                 ) : (
                                     <Route exact path='/' component={Feed}/>
                                 )}
+                                <Route path='/post/:id' component={Post}/>
                                 <Route path='/account' component={Account}/>
                             </Switch>
                         </React.Fragment>

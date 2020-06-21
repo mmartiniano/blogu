@@ -25,7 +25,7 @@ const LoginForm = props => {
         <form>
             <Input name="username" label="Username" onChange={update}/>
             <Input name="password" label="Password" type="password" onChange={update}/>
-            <Button type="submit" label="Log in" onClick={submit}/>
+            <Button level="primary" type="submit" label="Log in" onClick={submit}/>
         </form>
     )
 

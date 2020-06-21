@@ -1,7 +1,9 @@
 import React from 'react'
 import '../stylesheets/lune.css'
 import FormMessage from '../components/form/form_message'
-import ProfilePicturePicker from '../components/general/profile_picture_picker'
+import ProfilePicture from '../components/user/profile_picture'
+import ProfilePicturePicker from '../components/user/profile_picture_picker'
+import UserInfo from '../components/user/user_info'
 import PersonalDataForm from '../components/form/personal_data_form'
 import PasswordForm from '../components/form/password_form'
 import Button from '../components/form/button'
@@ -23,7 +25,7 @@ class Account extends React.Component {
 
     static contextType = Context
 
-    constructor(props) {
+    constructor(props, context) {
         super(props)
 
         this.state = {
@@ -32,12 +34,15 @@ class Account extends React.Component {
             pickingProfilePicture: false,
             changingPassword: false,
             deleting: false,
-            user: undefined
+            user: context.user
         }
     }
 
-    toggleEditing = () => {
-        this.setState({ editing: !this.state.editing, message: '' })
+    toggleEditing = value => {
+        if (value != null)
+            this.setState({ editing: value, message: '' })
+        else
+            this.setState({ editing: !this.state.editing, message: '' })   
     }
 
     toggleChangingPassword = () => {
@@ -82,8 +87,7 @@ class Account extends React.Component {
 
         this.context.togglePreloader()
 
-        this.props.history.push("/")
-        window.location.reload()             
+        this.props.history.push("/")           
     }
 
     update = data => {
@@ -92,7 +96,11 @@ class Account extends React.Component {
 
         UserService.update(data)
         .then( response => {
-            window.location.reload()
+            this.context.resetUser()
+            this.setState({
+                user: this.context.user
+            })
+            this.toggleEditing(false)
         })
         .catch( error => {
             this.setState({ message: error.response ? error.response.data : 'Failed to connect' })
@@ -106,7 +114,8 @@ class Account extends React.Component {
 
         UserService.updatePassword(data)
         .then( response => {
-            window.location.reload()
+            this.context.resetUser()
+            this.toggleChangingPassword()
         })
         .catch( error => {
             this.setState({ message: error.response ? error.response.data : 'Failed to connect' })
@@ -121,23 +130,15 @@ class Account extends React.Component {
 
         .then( () => {
             AuthService.logout()
-            this.context.resetUser()
             this.context.togglePreloader()
             this.props.history.push("/")
-            window.location.reload()
+            this.context.resetUser()
         })
         .catch( (error) => {
             this.setState({ message: error.response ? error.response.data : 'Failed to connect' })
         })
         this.context.togglePreloader()   
     }    
-
-    componentDidMount() {
-        this.setState({
-            user: this.context.user
-        })
-    }
-
 
     render() {
 
@@ -159,21 +160,14 @@ class Account extends React.Component {
                                 </div>
                             ) : (
                                 <React.Fragment>
-                                    <div className="profile-picture-wrapper large profile-picture-picker" onClick={this.showProfilePicturePicker}>
-                                        {(this.state.user && this.state.user.avatar) ? (
-                                            <img className="profile-picture" alt="" src={process.env.PUBLIC_URL + 'profile/' + this.state.user.avatar}/>
-                                        ) : (
-                                            <i className="profile-picture material-icons primary-text">person</i>
-                                        )}
-                                    </div>
+                                    <ProfilePicture size="large" picture={this.state.user.avatar} onClick={this.showProfilePicturePicker}/>
                                     <ProfilePicturePicker visible={this.state.pickingProfilePicture} onPick={this.handlePick} onCancel={this.handleCancelPick}/>
-                                    <div className="mt10">{this.state.user.name}</div>
-                                    <div>@{this.state.user.username}</div>
+                                    <UserInfo style={{textAlign: 'center'}} name={this.state.user.name} username={this.state.user.username}/>
                                     <div className="col s10 m8 l4 mt20">
                                         <Button onClick={this.logout} label="Log out"/>
                                         <Button onClick={this.toggleEditing} label="Edit personal data"/>
                                         <Button onClick={this.toggleChangingPassword} label="Change password"/>
-                                        <Button onClick={this.showDelete} label="Delete Account"/>
+                                        <Button level="danger" onClick={this.showDelete} label="Delete Account"/>
                                     </div>
                                     <Modal style={{height: '170px', textAlign: 'center'}} visible={this.state.deleting} onOK={this.handleOKDelete} onCancel={this.handleCancelDelete}>
                                         Are you sure you want to delete your Blogu account?

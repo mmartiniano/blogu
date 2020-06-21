@@ -19,7 +19,7 @@ import '../../stylesheets/lune.css'
 export default function Card(props) {
 
     return (
-        <div className={`card ${props.className || ''} ${props.round ? 'round' : ''} ${props.shadow ? 'shadow' : ''} ${props.color || ''}`}>
+        <div onClick={props.onClick} className={`card ${props.className || ''} ${props.round ? 'round' : ''} ${props.shadow ? 'shadow' : ''} ${props.color || ''} ${props.className}`}>
             {props.children}
         </div>
     )

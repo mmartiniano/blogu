@@ -1,6 +1,6 @@
 import React from 'react'
 import '../stylesheets/lune.css'
-import Card from '../components/general/card'
+import Post from '../components/post'
 import IconMessage from '../components/general/icon_message'
 
 import PostService from '../services/post_service'
@@ -27,11 +27,16 @@ class Feed extends React.Component {
     }
 
     load = () => {
+        this.context.togglePreloader(true)
+
         PostService.list()
         .then( response => {
             if (response.data.length > 0)
                 this.setState({
-                    posts: response.data.reverse()
+                    posts: response.data.reverse().map( (post) => {
+                        post.isAuthor = post.author._id === this.context.user.id ? true : false
+                        return post
+                    })
                 })
             else
                 this.setState({
@@ -42,6 +47,16 @@ class Feed extends React.Component {
             this.setState({
                 message: 'Could not get posts'
             })
+        })
+        .then( this.context.togglePreloader )
+    }
+
+    handleDeletePost = index => {
+        const postList = [...this.state.posts]
+        postList.splice(index, 1)
+
+        this.setState({
+            posts: postList
         })
     }
 
@@ -55,12 +70,8 @@ class Feed extends React.Component {
             <React.Fragment>
                 {this.state.posts ? (
                     <div className="content flex flex-column middle">
-                        {this.state.posts.map( (post, i) => {
-                            return (
-                                <Card key={i} round={true} color="secondary">
-                                    <div>{post.title}</div>
-                                </Card>
-                            )
+                        {this.state.posts.map( (post) => {
+                            return <Post type="card" history={this.props.history} key={post._id} onDelete={this.handleDeletePost} post={post}/>
                         })}
                     </div>
                 ) : (
