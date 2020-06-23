@@ -52,7 +52,7 @@ export default class Post extends React.Component {
     }
 
     share = () => {
-        copyToClipboard(`${window.location.orign}/post/${this.state._id}`)
+        copyToClipboard(`${window.location.origin}/post/${this.state._id}`)
         this.context.toastIt('Link copied to clipboard')
     }
 
