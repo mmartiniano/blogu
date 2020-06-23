@@ -21,10 +21,9 @@ const isAuthor = (request, response, next) => {
 
     PostService.getByUserId(request.userId, (error, posts) => {
         if (posts) {
-            if (posts.filter( post => {
-                return post._id.toString == postId
-            }).length > 0) 
-                return next()
+
+            if (posts.find( post =>  post._id.toString() == postId)) 
+               return next()
         }
 
         return response.status(AuthorizationError.CODE).json([AuthorizationError.MESSAGE])

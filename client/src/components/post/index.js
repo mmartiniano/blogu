@@ -70,7 +70,7 @@ export default class Post extends React.Component {
             this.props.onDelete(this.props.index)
         })
         .catch( error => {
-            this.showToast(error.response ? error.response.data : 'Failed to connect')
+            this.context.toastIt(error.response ? error.response.data : 'Failed to connect')
         })
         .then( this.context.togglePreloader )
     }
