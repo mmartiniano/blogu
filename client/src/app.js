@@ -42,6 +42,12 @@ export default class App extends React.Component {
             })
         }
 
+        this.setPost = (post) => {
+            this.setState({
+                post: post
+            })
+        }
+
         this.toastIt = (text) => {
             this.setState({
                 toast: true,
@@ -62,6 +68,7 @@ export default class App extends React.Component {
             togglePreloader: this.togglePreloader,
             resetUser: this.resetUser,
             setPublishing: this.setPublishing,
+            setPost: this.setPost,
             toastIt: this.toastIt
         }
         
@@ -81,13 +88,24 @@ export default class App extends React.Component {
                         <React.Fragment>
                             <Navbar/>
                             <Switch>
-                                {this.state.publishing ? (
-                                    <Route exact path='/' component={Publish}/>
-                                ) : (
-                                    <Route exact path='/' component={Feed}/>
-                                )}
-                                <Route path='/post/:id' component={Post}/>
-                                <Route path='/account' component={Account}/>
+                                <React.Fragment>
+                                    {this.state.publishing ? (
+                                        <React.Fragment>
+                                            <Route exact path='/'>
+                                                <Publish post={this.state.post}/>
+                                            </Route>
+                                            <Route path='/post/:id'>
+                                                <Publish post={this.state.post}/>
+                                            </Route>
+                                        </React.Fragment>
+                                    ) : (
+                                        <React.Fragment>
+                                            <Route exact path='/' component={Feed}/>
+                                            <Route exact path='/post/:id' component={Post}/>
+                                        </React.Fragment>
+                                    )}
+                                    <Route path='/account' component={Account}/>
+                                </React.Fragment>
                             </Switch>
                         </React.Fragment>
                     )} 

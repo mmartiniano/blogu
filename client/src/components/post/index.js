@@ -10,25 +10,25 @@ export default class Post extends React.Component {
 
     static contextType = Context
 
-    constructor(props) {
+    static defaultProps = {
+        _id: '',
+        title: '',
+        author: {
+            name: '',
+            username: '',
+            avatar: ''
+        },
+        text: '',
+        created_at: '',
+        index: undefined
+    }
+
+    constructor(props, context) {
         super(props)
 
-        this.publicState = {
-            _id: '',
-            title: '',
-            author: {
-                name: '',
-                username: '',
-                avatar: ''
-            },
-            text: '',
-            created_at: '',
-            isAuthor: false,
-            ...this.props.post,
-        }
+        this.isAuthor = this.props.author._id === context.user.id ? true : false
 
         this.state = {
-            ...this.publicState,
             deleting: false
         }
     }
@@ -48,18 +48,23 @@ export default class Post extends React.Component {
 
     open = () => {
         this.context.togglePreloader()
-        this.props.history.push(`/post/${this.state._id}`)
+        this.props.history.push(`/post/${this.props._id}`)
     }
 
     share = () => {
-        copyToClipboard(`${window.location.origin}/post/${this.state._id}`)
+        copyToClipboard(`${window.location.origin}/post/${this.props._id}`)
         this.context.toastIt('Link copied to clipboard')
+    }
+
+    edit = () => {
+        this.context.setPost(this.props)
+        this.context.setPublishing(true)
     }
 
     delete = () => {
         this.context.togglePreloader()
 
-        PostService.delete(this.state._id)
+        PostService.delete(this.props._id)
         .then( response => {
             this.context.toastIt('Post deleted')
             this.props.onDelete(this.props.index)
@@ -75,22 +80,18 @@ export default class Post extends React.Component {
             <React.Fragment>
                 {this.props.type === 'card' ? (
                     <Card round={true} color="secondary col s12 m10 l5" className="post pointer" onClick={this.open}>
-                        {this.props.post.index}
-                        <div className="post-title">{this.state.title}</div>
-                        <div className="post-brief"><p>{this.state.text}</p></div>
-                        <Metadata {...this.publicState} share={this.share} edit={this.edit} delete={this.showDelete}/>
+                        <div className="post-title">{this.props.title}</div>
+                        <div className="post-brief"><p>{this.props.text}</p></div>
+                        <Metadata {...this.props} isAuthor={this.isAuthor} share={this.share} edit={this.edit} delete={this.showDelete}/>
                     </Card>
                 ) : (
-                    <div>
-                        {this.props.post.index}
-                        <div className="post-title">{this.state.title}</div>
-                        <div className="post-brief"><p>{this.state.text}</p></div>
-                        <Metadata {...this.publicState} share={this.share} edit={this.edit} delete={this.showDelete}/>
-                        <Modal style={{height: '170px', textAlign: 'center'}} visible={this.state.deleting} onOK={this.handleOKDelete} onCancel={this.handleCancelDelete}>
-                            Are you sure you want to delete this post?
-                        </Modal>
+                    <div className="col s11 m10 l6">
+                        <div className="post-full-title">{this.props.title}</div>
+                        <Metadata {...this.props} isAuthor={this.isAuthor} share={this.share} edit={this.edit} delete={this.showDelete}/>
+                        <br/>
+                        <div className="post-text">{this.props.text}</div>
                     </div>
-                )}
+                )}  
                 <Modal style={{height: '170px', textAlign: 'center'}} visible={this.state.deleting} onOK={this.handleOKDelete} onCancel={this.handleCancelDelete}>
                     Are you sure you want to delete this post?
                 </Modal>

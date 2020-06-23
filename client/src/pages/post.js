@@ -21,28 +21,32 @@ class Post extends React.Component {
 
         this.state = {
             post: undefined,
-            message: ''
+            message: '',
+            iconMessage: 'description'
         }
     }
 
     load = () => {
-        this.context.togglePreloader()
+        this.context.togglePreloader(true)
 
         PostService.get(this.props.match.params.id)
         .then( response => {
-            this.setState({
-                post: response.data
-            })
+            this.context.togglePreloader(false)
+            this.setState({ post: response.data })
         })
         .catch( error => {
+            this.context.togglePreloader(false)
+            if (error.response.status && (error.response.status !== 404))
+               return this.setState({ message: 'Could not get post' })
+
             this.setState({
-                message: 'Could not get post'
+                message: 'Not found',
+                iconMessage: 'search_off'
             })
         })
-        .then( this.context.togglePreloader )
     }
 
-    handleDeletePost = index => {
+    handleDeletePost = () => {
         this.context.togglePreloader()
         this.props.history.push('/')
     }
@@ -57,12 +61,12 @@ class Post extends React.Component {
             <React.Fragment>
                 {this.state.post ? (
                     <div className="content flex flex-column middle">
-                        <PostComponent post={this.state.post} onDelete={this.handleDeletePost}/>
+                        <PostComponent {...this.state.post} onDelete={this.handleDeletePost}/>
                     </div>
                 ) : (
                     <div className="content flex middle center">
                         {this.state.message && (
-                            <IconMessage icon="description" message={this.state.message}/>
+                            <IconMessage icon={this.state.iconMessage} message={this.state.message}/>
                         )}
                     </div>
                 )}

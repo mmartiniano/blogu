@@ -44,6 +44,7 @@ class Publish extends React.Component {
         PostService.update(post)
         .then( response => {
             this.context.togglePreloader()
+            this.context.setPost(undefined)
             this.context.setPublishing(false)
         })
         .catch( error => {
@@ -52,19 +53,22 @@ class Publish extends React.Component {
         })  
     }
 
-    render() {
+    cancel = () => {
+        this.context.setPost(undefined)
+        this.context.setPublishing(false)
+    }
 
+    render() {
         return (
             <div className="content flex center">
                 <div className="col s10 m8 l5">
                     {this.state.message && (
                         <FormMessage type="fail" text={this.state.message}/>
                     )}
-                    <PostForm post={this.props.post} onSubmit={this.props.post ? this.edit : this.create} />
+                    <PostForm post={this.context.post} onSubmit={this.context.post ? this.edit : this.create} onCancel={this.cancel}/>
                     <br/>
                 </div>
-            </div>
-            
+            </div> 
         )
     }
 }

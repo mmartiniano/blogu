@@ -32,12 +32,18 @@ export default class TextArea extends React.Component {
         this.textarea = React.createRef()
         this.design = this.props.design === "box" ? "input-box" : "input-field"
 
+
+        this.state = {
+            value: this.props.value ? this.props.value : ''
+        }
+
         this.resize = this.resize.bind(this)
     }
 
     componentDidMount() {
         this.textarea.current.addEventListener('input', this.resize)
         window.addEventListener('resize', this.resize)
+        this.resize()
     }
 
     componentWillUnmount() {
@@ -50,6 +56,17 @@ export default class TextArea extends React.Component {
         this.textarea.current.style.height = this.textarea.current.scrollHeight + 'px'
     }
 
+    changeHandler = event => {
+        this.setState({
+            value: event.target.value
+        })
+
+        if (! this.props.onChange)
+            return
+        
+        this.props.onChange(event)
+    }
+
     render () {
         return (
             <div className={this.design}>
@@ -58,7 +75,8 @@ export default class TextArea extends React.Component {
                     name={this.props.name}
                     placeholder={this.props.label}
                     required={this.props.required}
-                    onChange={this.props.onChange}
+                    onChange={this.changeHandler}
+                    value={this.state.value}
                 />
             </div>
         )

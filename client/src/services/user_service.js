@@ -17,6 +17,10 @@ export default class UserService {
         return axios.get(url + id)
     }
 
+    static getPosts(id) {
+        return axios.get(url + id + '/posts')
+    }
+
     static update(data) {
         return axios.put(url + AuthService.user().id, data, { headers : AuthService.header() })
         .then( response => {

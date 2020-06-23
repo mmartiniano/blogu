@@ -23,7 +23,7 @@ const isAuthor = (request, response, next) => {
         if (posts) {
             if (posts.filter( post => {
                 return post._id.toString == postId
-            })) 
+            }).length > 0) 
                 return next()
         }
 

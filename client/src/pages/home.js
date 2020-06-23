@@ -38,6 +38,9 @@ class Home extends React.Component {
     login = (credentials) => {
         this.context.togglePreloader()
 
+        this.context.setPublishing(false)
+        this.context.setPost(undefined)
+
         AuthService.login(credentials)
         .then( response => {
             this.context.togglePreloader(false)
@@ -52,6 +55,9 @@ class Home extends React.Component {
     signup = (credentials) => {
 
         this.context.togglePreloader()
+
+        this.context.setPublishing(false)
+        this.context.setPost(undefined)
 
         AuthService.signup(credentials)
         .then( response => {

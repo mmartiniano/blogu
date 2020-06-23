@@ -31,12 +31,10 @@ class Feed extends React.Component {
 
         PostService.list()
         .then( response => {
+            this.context.togglePreloader(false)
             if (response.data.length > 0)
                 this.setState({
-                    posts: response.data.reverse().map( (post) => {
-                        post.isAuthor = post.author._id === this.context.user.id ? true : false
-                        return post
-                    })
+                    posts: response.data.reverse()
                 })
             else
                 this.setState({
@@ -44,11 +42,11 @@ class Feed extends React.Component {
                 })
         })
         .catch( error => {
+            this.context.togglePreloader(false)
             this.setState({
                 message: 'Could not get posts'
             })
         })
-        .then( this.context.togglePreloader )
     }
 
     handleDeletePost = index => {
@@ -71,7 +69,7 @@ class Feed extends React.Component {
                 {this.state.posts ? (
                     <div className="content flex flex-column middle">
                         {this.state.posts.map( (post) => {
-                            return <Post type="card" history={this.props.history} key={post._id} onDelete={this.handleDeletePost} post={post}/>
+                            return <Post type="card" history={this.props.history} key={post._id} onDelete={this.handleDeletePost} {...post}/>
                         })}
                     </div>
                 ) : (

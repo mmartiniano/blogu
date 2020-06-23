@@ -6,7 +6,9 @@ export const Context = React.createContext({
     user: undefined,
     resetUser: () => {},
     publishing: false,
+    post: undefined,
     setPublishing: () => {},
+    setPost: () => {},
     toast: false,
     toastMessage: '',
     toastIT: () => {}

@@ -2,22 +2,27 @@ import React, { useState } from 'react'
 import Input from './input'
 import TextArea from './textarea'
 import Button from './button'
-import '../../stylesheets/lune.css'
+import DividerText from '../general/divider_text'
 
 const PostForm = props => {
 
-    const [data, setData] = useState({ title: '', text: '' })
+    const [data, setData] = useState({ title: '', text: '', ...props.post })
 
     const submit = event => {
         event.preventDefault()
 
         if (! props.onSubmit)
             return
-
-        if (props.post)
-            return props.onSubmit(data)
         
         props.onSubmit(data)
+    }
+
+    const cancel = event => {
+        event.preventDefault()
+
+        if (! props.onCancel) return
+
+        props.onCancel()
     }
 
     const update = event => {
@@ -28,9 +33,11 @@ const PostForm = props => {
 
     return (
         <form>
-            <Input name="title" label="Title" onChange={update}/>
-            <TextArea name="text" label="Content" onChange={update}/>
-            <Button type="submit" label={props.post ? 'Save' : 'Publish'} onClick={submit}/>
+            <Input value={data.title} name="title" label="Title" onChange={update}/>
+            <TextArea value={data.text} name="text" label="Content" onChange={update}/>
+            <Button type="submit" label={props.post ? 'Save Changes' : 'Publish'} onClick={submit}/>
+            <DividerText text="or" classes="bold primary"/>
+            <Button label="Cancel" onClick={cancel}/>
         </form>
     )
 
