@@ -11,6 +11,7 @@ const User = require('../model/user') // User model
 const UserService = require('../service/user.service') // User service
 const PostService = require('../service/post.service') // Post service
 const AuthenticationError = require('../error/authentication.error') // Authentication Error
+const user = require('../model/user')
 
 // User authentication control
 
@@ -102,6 +103,25 @@ function read(request, response) {
     id = request.params.id
 
     UserService.getById(id, (error, document) => {
+        if (error)
+            return response.status(error.code).json([error.message])
+
+        response.status(200).json(new UserDTO(document))
+    })
+}
+
+/*
+* Read specific user by its username.
+*
+* process GET requests at '/api/user/username/:username'
+*
+* @return: user info as json
+*/
+function readByUsername(request, response) {
+   
+    const username = request.params.username
+
+    UserService.getByUsername(username, (error, document) => {
         if (error)
             return response.status(error.code).json([error.message])
 
@@ -215,4 +235,4 @@ function generateToken(user) {
     return jwt.sign( {id: user._id}, process.env.SECRET)
 }
 
-module.exports = { signup, signin, list, read, posts, update, updatePassword,remove }
+module.exports = { signup, signin, list, read, readByUsername, posts, update, updatePassword,remove }

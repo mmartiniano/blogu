@@ -21,6 +21,7 @@ router.get('/api/auth/session', Auth.verifyToken, Auth.OK)
 
 // User routes
 router.get('/api/user', UserController.list)
+router.get('/api/user/username/:username', UserController.readByUsername)
 router.get('/api/user/:id', Pattern.id, UserController.read)
 router.get('/api/user/:id/posts', Pattern.id, UserController.posts)
 router.put('/api/user/:id', Pattern.id, Auth.verifyToken, Auth.isOwner, Mounting.requiredToUpdatePersonalData, Pattern.user, Integrity.reservedWords, Integrity.userUniqueness, UserController.update)

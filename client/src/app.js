@@ -11,6 +11,7 @@ import Publish from './pages/publish'
 import Feed from './pages/feed'
 import Account from './pages/account'
 import Post from './pages/post'
+import Blog from './pages/blog'
 import Preloader from './components/general/preloader'
 import Toast from './components/general/toast'
 import { Context } from './context'
@@ -104,6 +105,7 @@ export default class App extends React.Component {
                                             <Route exact path='/post/:id' component={Post}/>
                                         </React.Fragment>
                                     )}
+                                    <Route exact path='/:username' component={Blog}/>
                                     <Route path='/account' component={Account}/>
                                 </React.Fragment>
                             </Switch>

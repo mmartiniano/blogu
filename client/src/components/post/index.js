@@ -47,6 +47,8 @@ export default class Post extends React.Component {
     }
 
     open = () => {
+        if (!this.props.history)
+            return
         this.context.togglePreloader()
         this.props.history.push(`/post/${this.props._id}`)
     }

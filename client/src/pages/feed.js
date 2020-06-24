@@ -1,6 +1,6 @@
 import React from 'react'
 import '../stylesheets/lune.css'
-import Post from '../components/post'
+import PostList from '../components/post/list'
 import IconMessage from '../components/general/icon_message'
 
 import PostService from '../services/post_service'
@@ -49,15 +49,6 @@ class Feed extends React.Component {
         })
     }
 
-    handleDeletePost = index => {
-        const postList = [...this.state.posts]
-        postList.splice(index, 1)
-
-        this.setState({
-            posts: postList
-        })
-    }
-
     componentDidMount() {
         this.load()
     }
@@ -68,9 +59,7 @@ class Feed extends React.Component {
             <React.Fragment>
                 {this.state.posts ? (
                     <div className="content flex flex-column middle">
-                        {this.state.posts.map( (post) => {
-                            return <Post type="card" history={this.props.history} key={post._id} onDelete={this.handleDeletePost} {...post}/>
-                        })}
+                        <PostList history={this.props.history} posts={this.state.posts} />
                     </div>
                 ) : (
                     <div className="content flex middle center">

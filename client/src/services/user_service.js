@@ -17,6 +17,10 @@ export default class UserService {
         return axios.get(url + id)
     }
 
+    static getByUsername(username) {
+        return axios.get(url + 'username/' + username)
+    }
+
     static getPosts(id) {
         return axios.get(url + id + '/posts')
     }
