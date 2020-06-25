@@ -87,7 +87,8 @@ class Account extends React.Component {
 
         this.context.togglePreloader()
 
-        this.props.history.push("/")           
+        if (this.props.history)
+            this.props.history.push("/")           
     }
 
     update = data => {
@@ -130,8 +131,9 @@ class Account extends React.Component {
 
         .then( () => {
             AuthService.logout()
-            this.context.togglePreloader()
-            this.props.history.push("/")
+                
+            if (this.props.history)this.context.togglePreloader()
+                this.props.history.push("/")
             this.context.resetUser()
         })
         .catch( (error) => {

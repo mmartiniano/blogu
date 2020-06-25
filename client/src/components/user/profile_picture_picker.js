@@ -43,8 +43,8 @@ export default class ProfilePicturePicker extends React.Component {
                     </div>
                     {PROFILE_PICTURES.map( (picture, i) => {
                         return (
-                            <div className="profile-picture-wrapper profile-picture-picker-item" onClick={event => this.select(event, picture)}>
-                                <img className="profile-picture" key={i} alt="" src={process.env.PUBLIC_URL + 'profile/' + picture}/>
+                            <div  key={picture} className="profile-picture-wrapper profile-picture-picker-item" onClick={event => this.select(event, picture)}>
+                                <img className="profile-picture" alt="" src={process.env.PUBLIC_URL + 'profile/' + picture}/>
                             </div>
                         )
                     })}

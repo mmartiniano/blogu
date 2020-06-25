@@ -48,7 +48,7 @@ class Post extends React.Component {
 
     handleDeletePost = () => {
         this.context.togglePreloader()
-        this.props.history.push('/')
+        this.props.history.goBack()
     }
 
     componentDidMount() {

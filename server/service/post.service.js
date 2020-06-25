@@ -56,7 +56,7 @@ module.exports = {
     * @param: callback: function to recieve posts found or error
     */
     getByUserId(userId, callback) {
-        Post.find({author: userId}, (error, documents) => {
+        Post.find({author: userId}).populate('author', 'name username avatar').exec( (error, documents) => {
             if (error)
                 callback(new PostError(PostError.GET_FROM_USER), null)
             else 

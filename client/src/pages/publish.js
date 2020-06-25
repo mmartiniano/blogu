@@ -30,6 +30,7 @@ class Publish extends React.Component {
         PostService.create(post)
         .then( response => {
             this.context.togglePreloader()
+            this.context.toastIt('Published')
             this.context.setPublishing(false)
         })
         .catch( error => {
@@ -44,6 +45,7 @@ class Publish extends React.Component {
         PostService.update(post)
         .then( response => {
             this.context.togglePreloader()
+            this.context.toastIt('Updated')
             this.context.setPost(undefined)
             this.context.setPublishing(false)
         })

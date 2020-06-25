@@ -61,6 +61,8 @@ export default class Post extends React.Component {
     edit = () => {
         this.context.setPost(this.props)
         this.context.setPublishing(true)
+        if (typeof this.props.onEdit === 'function')
+            this.props.onEdit()
     }
 
     delete = () => {
@@ -68,8 +70,9 @@ export default class Post extends React.Component {
 
         PostService.delete(this.props._id)
         .then( response => {
-            this.context.toastIt('Post deleted')
-            this.props.onDelete(this.props.index)
+            this.context.toastIt('Deleted')
+            if (typeof this.props.onDelete === 'function')
+                this.props.onDelete(this.props.index)
         })
         .catch( error => {
             this.context.toastIt(error.response ? error.response.data : 'Failed to connect')

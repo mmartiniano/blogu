@@ -9,9 +9,8 @@ import Navbar from './components/navigation/blogu_navbar'
 import Home from './pages/home'
 import Publish from './pages/publish'
 import Feed from './pages/feed'
-import Account from './pages/account'
+import Page from './pages/page'
 import Post from './pages/post'
-import Blog from './pages/blog'
 import Preloader from './components/general/preloader'
 import Toast from './components/general/toast'
 import { Context } from './context'
@@ -89,25 +88,25 @@ export default class App extends React.Component {
                         <React.Fragment>
                             <Navbar/>
                             <Switch>
-                                <React.Fragment>
-                                    {this.state.publishing ? (
-                                        <React.Fragment>
-                                            <Route exact path='/'>
-                                                <Publish post={this.state.post}/>
-                                            </Route>
-                                            <Route path='/post/:id'>
-                                                <Publish post={this.state.post}/>
-                                            </Route>
-                                        </React.Fragment>
-                                    ) : (
-                                        <React.Fragment>
-                                            <Route exact path='/' component={Feed}/>
-                                            <Route exact path='/post/:id' component={Post}/>
-                                        </React.Fragment>
-                                    )}
-                                    <Route exact path='/:username' component={Blog}/>
-                                    <Route path='/account' component={Account}/>
-                                </React.Fragment>
+                                {this.state.publishing ? (
+                                    <React.Fragment>
+                                        <Route exact path='/'>
+                                            <Publish post={this.state.post}/>
+                                        </Route>
+                                        <Route path='/post/:id'>
+                                            <Publish post={this.state.post}/>
+                                        </Route>
+                                        <Route exact path='/:page'>
+                                            <Publish post={this.state.post}/>
+                                        </Route>
+                                    </React.Fragment>
+                                ) : (
+                                    <React.Fragment>
+                                        <Route exact path='/' component={Feed}/>
+                                        <Route exact path='/post/:id' component={Post}/>
+                                        <Route exact path='/:page' component={Page}/>
+                                    </React.Fragment>
+                                )}
                             </Switch>
                         </React.Fragment>
                     )} 

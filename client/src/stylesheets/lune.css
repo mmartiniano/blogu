@@ -883,6 +883,7 @@ h4 { font-size: 20px; }
 	overflow: hidden;
 	height: 50px;
 	width: 50px;
+	font-size: 50px;
 	background-color: var(--highlight);
 	border-radius: var(--round);
 	display: flex;
@@ -897,9 +898,9 @@ h4 { font-size: 20px; }
 }
 
 .profile-picture-wrapper.large {
-	height: 80px;
-	width: 80px;
-	font-size: 80px;
+	height: 70px;
+	width: 70px;
+	font-size: 70px;
 }
 
 .profile-picture-wrapper .profile-picture {
@@ -909,6 +910,7 @@ h4 { font-size: 20px; }
 
 .profile-picture-wrapper i {
 	font-size: inherit;
+	text-align: center;
 }
 
 .profile-picture-picker {

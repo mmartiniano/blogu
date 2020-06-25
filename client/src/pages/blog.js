@@ -1,5 +1,7 @@
 import React from 'react'
 import PostList from '../components/post/list'
+import ProfilePicture from '../components/user/profile_picture'
+import UserInfo from '../components/user/user_info'
 import IconMessage from '../components/general/icon_message'
 
 import UserService from '../services/user_service'
@@ -22,6 +24,7 @@ class Blog extends React.Component {
         this.state = {
             user: undefined,
             posts: [],
+            numberOfPosts: undefined,
             iconMessage: {
                 icon: undefined,
                 message: ''
@@ -35,7 +38,7 @@ class Blog extends React.Component {
 
         try {
 
-            const { data } = await UserService.getByUsername(this.props.match.params.username)
+            const { data } = await UserService.getByUsername(this.props.username)
             this.setState({ user: data })
 
         } catch (error) {
@@ -57,7 +60,7 @@ class Blog extends React.Component {
                 })     
         }
 
-        if (!this.state.user) return
+        if (!this.state.user) return this.context.togglePreloader(false)
 
         try {
 
@@ -72,6 +75,8 @@ class Blog extends React.Component {
                     }
                 })
 
+            this.setState({ numberOfPosts : data.length })
+
         } catch (error) {
 
             this.setState({
@@ -82,14 +87,26 @@ class Blog extends React.Component {
             }) 
         }
 
-        console.log(this.state.user)
-        console.log(this.state.posts)
-
         this.context.togglePreloader(false)
+    }
+
+    handleDeletePost = postListLength => {
+        this.setState({ numberOfPosts: postListLength })
+        if (postListLength <= 0)
+            this.setState({
+                iconMessage: {
+                    message: 'There are no posts'
+                }
+            })
     }
 
     componentDidMount() {
         this.load()
+    }
+
+    componentDidUpdate(previousProps) {
+        if (this.props.username !== previousProps.username)
+            this.load()                
     }
 
     render() {
@@ -97,12 +114,18 @@ class Blog extends React.Component {
         return (
             <React.Fragment>
                 {this.state.user ? (
-                    <PostList history={this.props.history} posts={this.state.posts} />
-                ) : (
-                    <div className="content flex middle center">
-                        {this.state.message && (
+                    <div className="content flex flex-column middle">
+                        <ProfilePicture picture={this.state.user.avatar} onClick={this.showProfilePicturePicker}/>
+                        <UserInfo style={{textAlign: 'center', marginBottom: '20px'}} name={this.state.user.name} username={this.state.user.username}/>
+                        {this.state.numberOfPosts > 0 ? (
+                            <PostList history={this.props.history} posts={this.state.posts} onDeleteItem={this.handleDeletePost}/>
+                        ) : (
                             <IconMessage {...this.state.iconMessage} />
                         )}
+                    </div>
+                ) : (
+                    <div className="content flex middle center">
+                        <IconMessage {...this.state.iconMessage}/>
                     </div>
                 )}
             </React.Fragment>
